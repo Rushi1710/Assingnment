@@ -38,7 +38,7 @@ public class App
 //		emp.setDeptno(20);
 //		emp.setEid(103);
 //		dep.setDepartlocation("Panvel");
-//		dep.setDeptno(32);
+//		dep.setDeptno(30);
 //		
 //		dao.insertData(emp, dep);
 		
@@ -54,14 +54,15 @@ public class App
 		
 		
 		// Delete Data
-		//emp.setEid(102);
+		emp.setEid(102);
 		
-		//dao.deleteData(emp);
 		
-       System.out.println(dao.getAllEmployee());
+		dao.deleteData(emp);
+		
+        
     }
     
-    @Bean1
+    @Bean
 	public DataSource getDataDataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		System.out.println("datasources creating");
