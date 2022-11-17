@@ -6,9 +6,6 @@ public class ProductIteamDto {
 
 	
 	MultipartFile img;
-	
-	
-	
 	private int productId;
 	private String description;
 	private String productName;
@@ -97,6 +94,19 @@ public class ProductIteamDto {
 
 	public void setImg(MultipartFile img) {
 		this.img = img;
+	}
+
+
+
+	public void setItemPhoto(String filename) {
+	
+	}
+
+
+
+	public Integer getItemId() {
+
+		return null;
 	}
 
 

@@ -151,17 +151,15 @@ body {
 	<div class="container-fluid" id="product-container">
 		<div class="row">
 			<%
-			for (ProductItems iteam : product)
-
-			{
+			for (ProductItems iteam : product) {
 			%>
 			<div class="col-12">
 
 				<div class="card mt-3">
 					<div class="card-horizontal">
 						<div class="img-square-wrapper">
-							<img class="" src="../productimages/<%=iteam.getImage()%>" alt="Card image cap"
-								width="200px" height="200px">
+							<img class="" src="../productimages/<%=iteam.getImage()%>"
+								alt="Card image cap" width="200px" height="200px">
 						</div>
 						<div class="card-body">
 							<h4>
@@ -175,15 +173,14 @@ body {
 							<div>
 								<button class="btn btn-primary" type="submit">
 									<a style="color: white"
-										onclick="addCart(<%=iteam.getProductId()%>,),al">Add
-										To Cart</a>
+										onclick="addCart(<%=iteam.getProductId()%>,),al">Add To
+										Cart</a>
 								</button>
 
 
 								<button class="btn btn-primary" type="submit">
 									<a style="color: white"
-										onclick="buynow(<%=iteam.getProductId()%>,)">Buy
-										Now</a>
+										onclick="buynow(<%=iteam.getProductId()%>,)">Buy Now</a>
 								</button>
 							</div>
 						</div>
@@ -214,10 +211,6 @@ body {
 			console.log("Submit button clicked");
 			event.preventDefault();
 			let prodname=$('#input-search').val();	
-			
-				
-			
-			
 			let searchval={
 			"productName":prodname
 			}
@@ -340,9 +333,7 @@ body {
 			 window.location.replace("http://localhost:8082/customer/login") 
 		} 
     } 
-	 
-	
-	</script>
+</script>
 
 </body>
 </html>

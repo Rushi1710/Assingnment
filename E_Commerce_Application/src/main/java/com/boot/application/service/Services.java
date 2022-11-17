@@ -30,11 +30,10 @@ public class Services {
 
 	public boolean validateCustomer(String userName, String password) {
 
-		if (this.customerRepository.existsById(userName) && password != null) {
+		if(this.customerRepository.existsById(userName) && password != null) {
 			return true;
 		}
-		return false;
-
+		return false;	
 	}
 	
 	public Customer servicesForAdmin(String userName) {

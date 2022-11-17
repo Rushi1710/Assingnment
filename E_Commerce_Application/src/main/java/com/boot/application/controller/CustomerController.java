@@ -32,7 +32,7 @@ public class CustomerController {
 	@Autowired
 	private ProductService productService;
 
-	static Logger logger = Logger.getLogger(CustomerController.class);
+	//static Logger logger = Logger.getLogger(CustomerController.class);
 
 	static final String LOGIN = "login";
 
@@ -84,16 +84,13 @@ public class CustomerController {
 	@RequestMapping("/registration")
 	public String registerCustomer() {
 		return "registration";
-
 	}
 
 	@PostMapping("/registration")
 	public String validation(CustomerDto customerDto, Model model) {
-
 		if (services.insertCustomerData(customerDto) != null) {
 			return LOGIN;
 		}
-
 		String error = "Already Exist";
 		model.addAttribute("error", error);
 		return "registration";
@@ -102,39 +99,22 @@ public class CustomerController {
 
 	@PostMapping("/search")
 	public @ResponseBody List<ProductItems> getProductBySearch(@RequestBody String productName) {
-		logger.info("search button clicked" + productName);
+		//logger.info("search button clicked" + productName);
 		JSONObject jsonObj = new JSONObject(productName);
 		String name = jsonObj.getString("productName");
 		if (name.trim().isEmpty()) {
 			name = "";
 		}
-		logger.info("name " + name);
+		//logger.info("name " + name);
 		return this.productService.getProductBySearch(name);
-	}
-
-	@PostMapping("buy")
-	public String cartToHome() {
-		return "home";
-
 	}
 
 	@RequestMapping("/buy")
 	public String buy(@RequestParam("product_id") int productId, Model model) {
-		System.out.println("/buy ");
-		ProductItems productDetails = productService.getProductById(productId).get();
+		ProductItems productDetails = productService.getProductById(productId);
 		model.addAttribute("product", productDetails);
 
 		return "buy";
-	}
-
-	@PostMapping("/buynow")
-	public @ResponseBody ProductItems buyProduct(@RequestBody String productid) {
-		JSONObject jsonObj = new JSONObject(productid);
-		System.out.println("/buynow ");
-		int id = jsonObj.getInt("productId");
-		logger.info("id  " + id);
-
-		return this.productService.getProductBuyNow(id).get();
 	}
 
 	@RequestMapping("/cart1")
@@ -145,17 +125,17 @@ public class CustomerController {
 
 	@GetMapping("/cart")
 	public String addCartt(@RequestParam("product_id") int productId, Model model) {
-		logger.info(productId);
-		ProductItems productDetails = productService.getProductById(productId).get();
+		//logger.info(productId);
+		ProductItems productDetails = productService.getProductById(productId);
 		model.addAttribute("product", productDetails);
 		return "cart";
 	}
-	
+
 	@RequestMapping("/logout")
 	public String logOut(HttpSession session) {
 		session.invalidate();
 		return "redirect:home";
-		
+
 	}
 
 }

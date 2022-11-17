@@ -27,6 +27,7 @@ public class CustomerMap {
 	
 	public static ProductItems convertProductDtoToProduct(ProductIteamDto productDto) {
 		ProductItems product=new ProductItems();
+		product.setProductId(productDto.getProductId());
 		product.setDescription(productDto.getDescription());
 		product.setProductName(productDto.getProductName());
 		product.setImage(productDto.getImage());
