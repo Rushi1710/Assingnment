@@ -54,7 +54,7 @@ public class ProductService {
 
 	public ProductItems getProductById(int productId) {
 
-		return  .get();
+		return this.productRepository.findById(productId).get();
 
 	}
 
