@@ -14,7 +14,7 @@ public class MyAspect {
 
 	@Pointcut("execution(* com.boot.application.controller..*.*(..))||execution(* com.boot.application.service..*.*(..))")
 	public void log() {
-
+ // pointcut
 	}
 
 	@Around(value = "log()")

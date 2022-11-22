@@ -1,5 +1,6 @@
 package com.boot.application.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,6 +12,7 @@ public class Customer {
 
 	@Id
 	private String userName;
+//	@Column(unique = true , length = 20 , nullable = true)
 	private String email;
 	private String password;
 	private String contact;

@@ -27,14 +27,13 @@ public class ProductService {
 		}
 		return false;
 	}
-	
+
 	public boolean updateProduct(ProductIteamDto productIteamDto) {
-		if(this.productRepository.existsById(productIteamDto.getProductId()))
-		{
-			ProductItems product=CustomerMap.convertProductDtoToProduct(productIteamDto);
-		System.out.println("Product Converted from valuemapper :" + product);
-		this.productRepository.save(product);
-		return true;
+		if (this.productRepository.existsById(productIteamDto.getProductId())) {
+			ProductItems product = CustomerMap.convertProductDtoToProduct(productIteamDto);
+			System.out.println("Product Converted from valuemapper :" + product);
+			this.productRepository.save(product);
+			return true;
 		}
 		System.out.println("Product not found with the given product id :" + productIteamDto.getProductId());
 		return false;
@@ -54,17 +53,16 @@ public class ProductService {
 	}
 
 	public ProductItems getProductById(int productId) {
-		System.out.println("product get by id == "+this.productRepository.findById(productId).get());
-		return this.productRepository.findById(productId).get();
+
+		return  .get();
 
 	}
 
 	public void deleteProduct(int productId) {
-		if(this.productRepository.existsById(productId)) {
+		if (this.productRepository.existsById(productId)) {
 			productRepository.deleteById(productId);
 		}
-		
+
 	}
 
-	
 }

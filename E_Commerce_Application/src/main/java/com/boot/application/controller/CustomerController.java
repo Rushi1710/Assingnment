@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boot.application.dto.CustomerDto;
+import com.boot.application.entity.AddCart;
 import com.boot.application.entity.Customer;
 import com.boot.application.entity.ProductItems;
 import com.boot.application.service.ProductService;
@@ -31,8 +31,6 @@ public class CustomerController {
 
 	@Autowired
 	private ProductService productService;
-
-	//static Logger logger = Logger.getLogger(CustomerController.class);
 
 	static final String LOGIN = "login";
 
@@ -99,13 +97,13 @@ public class CustomerController {
 
 	@PostMapping("/search")
 	public @ResponseBody List<ProductItems> getProductBySearch(@RequestBody String productName) {
-		//logger.info("search button clicked" + productName);
+
 		JSONObject jsonObj = new JSONObject(productName);
 		String name = jsonObj.getString("productName");
 		if (name.trim().isEmpty()) {
 			name = "";
 		}
-		//logger.info("name " + name);
+
 		return this.productService.getProductBySearch(name);
 	}
 
@@ -113,22 +111,32 @@ public class CustomerController {
 	public String buy(@RequestParam("product_id") int productId, Model model) {
 		ProductItems productDetails = productService.getProductById(productId);
 		model.addAttribute("product", productDetails);
-
 		return "buy";
 	}
 
 	@RequestMapping("/cart1")
-	public String cart() {
+	public String cart(Model model) {
+		List<AddCart> addCarts = services.getAllCartItem();
+		System.out.println(addCarts);
+		model.addAttribute("cart", addCarts);
 		return "cart";
 
 	}
 
 	@GetMapping("/cart")
-	public String addCartt(@RequestParam("product_id") int productId, Model model) {
-		//logger.info(productId);
+	public String addCartt(@RequestParam("product_id") int productId, Model model, HttpSession session) {
+
+		String userEmail = (String) session.getAttribute("name");
 		ProductItems productDetails = productService.getProductById(productId);
-		model.addAttribute("product", productDetails);
-		return "cart";
+		AddCart addcart = new AddCart();
+		addcart.setCartIteamDescription(productDetails.getDescription());
+		addcart.setCartIteamId(productId);
+		addcart.setCartIteamImage(productDetails.getImage());
+		addcart.setCartIteamName(productDetails.getProductName());
+		addcart.setCartIteamPrice(productDetails.getPrice());
+		addcart.setCustomerEmail(userEmail);
+		services.inserItemToCart(addcart);
+		return "redirect:cart1";
 	}
 
 	@RequestMapping("/logout")

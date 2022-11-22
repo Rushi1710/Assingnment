@@ -1,6 +1,4 @@
 package com.boot.application.controller;
-
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -48,7 +46,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/addproduct")
-	public @ResponseBody ResponseStatus<String> addProduct(@ModelAttribute ProductIteamDto dto) throws IOException {
+	public @ResponseBody ResponseStatus<String> addProduct(@ModelAttribute ProductIteamDto dto)  {
 
 		System.out.println("Dto from conroller :" + dto);
 
@@ -56,7 +54,7 @@ public class AdminController {
 		System.out.println("From controller" + filename);
 		dto.setImage(filename);
 		this.productService.insertProduct(dto);
-		return new ResponseStatus<String>(200, "success");
+		return new ResponseStatus<>(200, "success");
 
 	}
 
@@ -72,7 +70,6 @@ public class AdminController {
 		ProductItems product = this.productService.getProductById(prodId);
 		return new ResponseStatus<>(200, product);
 
-
 	}
 	
 	@GetMapping("/delete")
@@ -83,10 +80,8 @@ public class AdminController {
 		
 	}
 	
-	
-
 	@PostMapping("/updateproduct")
-	public @ResponseBody ResponseStatus<String> updateProduct(@ModelAttribute ProductIteamDto dto) throws IOException {
+	public @ResponseBody ResponseStatus<String> updateProduct(@ModelAttribute ProductIteamDto dto)  {
 		System.out.println("update Product Called with the data : " + dto);
 		this.imageUploader.setId(dto.getProductId());
 		String filename = this.imageUploader.uploadImage(path, dto.getImg());

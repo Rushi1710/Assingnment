@@ -22,7 +22,7 @@ public class ImageUploader {
 
 	}
 	
-	public String uploadImage(String path,MultipartFile  file) throws NullPointerException
+	public String uploadImage(String path,MultipartFile  file) 
 	{
 		try {
 			String name=file.getOriginalFilename();

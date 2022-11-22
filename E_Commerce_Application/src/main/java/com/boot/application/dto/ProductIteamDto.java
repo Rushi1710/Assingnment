@@ -4,7 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ProductIteamDto {
 
-	
 	MultipartFile img;
 	private int productId;
 	private String description;
@@ -17,8 +16,6 @@ public class ProductIteamDto {
 
 	}
 
-	
-
 	public ProductIteamDto(MultipartFile img, int productId, String description, String productName, String image,
 			int price, int quantity) {
 		super();
@@ -30,8 +27,6 @@ public class ProductIteamDto {
 		this.price = price;
 		this.quantity = quantity;
 	}
-
-
 
 	public int getProductId() {
 		return productId;
@@ -96,18 +91,13 @@ public class ProductIteamDto {
 		this.img = img;
 	}
 
-
-
 	public void setItemPhoto(String filename) {
-	
+
 	}
-
-
 
 	public Integer getItemId() {
 
 		return null;
 	}
-
 
 }

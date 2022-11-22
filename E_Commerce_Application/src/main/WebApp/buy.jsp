@@ -44,8 +44,9 @@
 
 											<!-- Product Image  -->
 
-											<img src="../productimages/<%=productItems.getImage()%>" class="img-fluid"
-												style="width: 150px;" alt="Generic placeholder image">
+											<img src="../productimages/<%=productItems.getImage()%>"
+												class="img-fluid" style="width: 150px;"
+												alt="Generic placeholder image">
 										</div>
 										<div class="flex-grow-1 ms-3">
 											<a href="#!" class="float-end text-black"><em
@@ -62,11 +63,11 @@
 
 												<!-- Product Price -->
 
-												<p class="fw-bold mb-0 me-5 pe-3"><%=productItems.getPrice()%></p>
+												<h3 class="fw-bold mb-0 me-5 pe-3"><%=productItems.getPrice()%></h3>
 												<div class="def-number-input number-input safari_only">
 
 													<input class="quantity fw-bold text-black" min="0"
-														name="quantity" value="1" type="number"
+														name="quantity" value="1" type="number" id="qut"
 														onclick="totalBill(<%=productItems.getPrice()%>,value)">
 
 												</div>
@@ -93,18 +94,21 @@
 
 									<h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
 
-									<form class="mb-5" action="/dashboard" method="post">
+									<form class="mb-5" action="/dashboard" method="post"
+										name="form1">
 
 										<div class="form-outline mb-5">
 											<input type="text" id="typeText"
 												class="form-control form-control-lg" siez="17"
-												minlength="12" maxlength="12" required /> <label
+												placeholder="1234-4567-6789"
+												pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" required /> <label
 												class="form-label" for="typeText">Card Number</label>
 										</div>
 
 										<div class="form-outline mb-5">
-											<input type="text" id="typeName"
-												class="form-control form-control-lg" siez="17" required />
+											<input type="text" id="typeName" name="customerName"
+												onclick="lettersOnlyCheck(customerName)"
+												class="form-control form-control-lg" size="17" required />
 											<label class="form-label" for="typeName">Name on card</label>
 										</div>
 
@@ -121,8 +125,8 @@
 												<div class="form-outline">
 													<input type="password" id="typeText"
 														class="form-control form-control-lg" size="1"
-														minlength="3" maxlength="3" required /> <label
-														class="form-label" for="typeText">Cvv</label>
+														pattern="[0-9]{3}" required /> <label class="form-label"
+														for="typeText">Cvv</label>
 												</div>
 											</div>
 										</div>
@@ -152,7 +156,7 @@
 			</div>
 		</div>
 	</section>
-	<script type="text/javascript">
+	<script type="text/javascript"> 
 	 function totalBill(price,quantity){
 		 console.log("1 product price : "+price)
 		 console.log(quantity)
@@ -160,6 +164,24 @@
 		 document.getElementById('itemPrice').innerHTML=total;
 		 console.log(total);
 	 }
+	 
+	 
+	 function lettersOnlyCheck(customerName)
+	 {
+	    
+	    var reg = /^[A-Za-z]+$/;
+	    if(customerName.value.match(reg))
+	      {
+	       return true;
+	      }
+	    else
+	      {
+	      alert("Please enter only letters in name.");
+	      return false;
+	      }
+	    }    
+	    
+	 
 	</script>
 
 </body>

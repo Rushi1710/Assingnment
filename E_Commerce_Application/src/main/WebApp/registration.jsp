@@ -90,22 +90,21 @@ a {
 			<label for="email"><strong>Email</strong></label> <input type="text"
 				placeholder="Enter Email" name="email" id="email" required>
 
-			<label for="psw"><strong>Password</strong></label> <input type="password"
-				placeholder="Enter Password" name="password" id="psw" required>
-
-			<label for="name"><strong>Full Name</strong></label> <input type="text"
-				placeholder="Enter Name" name="name" id="psw-repeat" required>
-
-			<label for="UserName"><strong>UserName</strong></label> <input type="text"
-				placeholder="Enter UserName" name="userName" id="psw-repeat"
-				required> <label for="Contact"><strong>Mobile No</strong></label> <input
-				type="text" placeholder="Enter Mobile Number" name="contact"
-				id="psw-repeat" required> <label for="location"><strong>Location</strong></label>
-			<input type="text" placeholder="Enter location" name="location"
-				id="psw-repeat" required>
+			<label for="psw"><strong>Password</strong></label> <input
+				type="password" placeholder="Enter Password" name="password"
+				id="psw" required> <label for="name"><strong>Full
+					Name</strong></label> <input type="text" placeholder="Enter Name" name="name"
+				id="psw-repeat" required> <label for="UserName"><strong>UserName</strong></label>
+			<input type="text" placeholder="Enter UserName" name="userName"
+				id="psw-repeat" required> <label for="contact"><strong>Mobile
+					No</strong></label> <input type="text" placeholder="Enter Mobile Number"
+				name="contact" id="psw-repeat" pattern="[0-9]{10}" title="Ten digit number enter not added etra symbole" required> <label
+				for="location"><strong>Location</strong></label> <input type="text"
+				placeholder="Enter location" name="location" id="psw-repeat"
+				required>
 
 			<hr>
-			
+
 
 			<button type="submit" class="registerbtn">Register</button>
 		</div>
