@@ -69,11 +69,11 @@ public class Services {
 
 	}
 
-	public Customer getCustomerById(String email) {
-		Optional<Customer> optCustomer = this.customerRepository.findById(email);
+	public Customer getCustomerById(String userName) {
+		Optional<Customer> optCustomer = this.customerRepository.findById(userName);
 		if (optCustomer.isPresent())
 			return optCustomer.get();
-		throw new EntityNotFoundException("Customer Not Found " + email);
+		throw new EntityNotFoundException("Customer Not Found " + userName);
 	}
 
 }

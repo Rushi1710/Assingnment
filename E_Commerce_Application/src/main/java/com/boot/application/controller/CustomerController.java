@@ -152,18 +152,29 @@ public class CustomerController {
 	}
 
 	@GetMapping("/order")
-	public String orderPage(HttpSession session, Model m) {
+	public String orderPage(@RequestParam("product_id") int pid, HttpSession session, Model m) {
+
+		System.out.println("Order");
+		String userName = (String) session.getAttribute("name");
+		System.out.println(pid);
+//		Order order = new Order();
+//		order.setProductItems(this.productService.getProductById(pid));
+//		order.setCustomer(this.services.getCustomerById(userName));
+//		String location = this.services.getCustomerById(userName).getLocation();
+//		order.setAddress(location);
+		Order order = this.orderService.buyProduct(userName, pid);
 
 		if (session.getAttribute("name") == null)
 			return "redirect:login";
 
 		String customerRequestDto = (String) session.getAttribute("name");
-		Customer customer = this.services.getCustomerById(customerRequestDto);
-		System.out.println(customer);
-		List<Order> orders = this.orderService.getAllOrderByUserName(customer);
-		System.out.println(orders);
+		// Customer customer = this.services.getCustomerById(customerRequestDto);
+		// System.out.println(customer);
+		// List<Order> orders = this.orderService.getAllOrderByUserName(customer);
+		// System.out.println(orders);
+		System.out.println("ORDER" + order);
 
-		m.addAttribute("orders", orders);
+		m.addAttribute("orders", order);
 		return "order";
 	}
 

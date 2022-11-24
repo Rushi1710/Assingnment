@@ -17,11 +17,11 @@ public interface ProductRepository extends JpaRepository<ProductItems, Integer> 
 
 	public List<ProductItems> findByproductNameContaining(String productName);
 
-	@Query(nativeQuery = true, value = "select quantity from product where productId=?")
+	@Query(nativeQuery = true, value = "select quantity from productitems where productId=?")
 	int countProductQuantity(@Param("productId") int id);
 
 	@Transactional
 	@Modifying
-	@Query(nativeQuery = true, value = "update product set quantity=? where productId=?")
+	@Query(nativeQuery = true, value = "update productitems set quantity=? where productId=?")
 	void updateQuantityOfProductAfterOrder(@Param("quantity") int deductedQuantity, @Param("productId") int itemId);
 }

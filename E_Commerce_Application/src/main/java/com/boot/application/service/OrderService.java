@@ -22,24 +22,28 @@ public class OrderService {
 	@Autowired
 	OrderRepository orderRepository;
 
-	public boolean buyProduct(String email, int productId) {
-		Customer customer = this.service.getCustomerById(email);
+	public Order buyProduct(String userName, int productId) {
+		Customer customer = this.service.getCustomerById(userName);
 		ProductItems product = this.productService.getProductById(productId);
 		int productQuantity = this.productService.getQuantity(productId);
 		if (productQuantity > 0) {
 			Order order = new Order();
 			order.setCustomer(customer);
 			order.setProductItems(product);
+			String location = this.service.getCustomerById(userName).getLocation();
+			order.setAddress(location);
 			this.orderRepository.save(order);
 			int deductedquantity = productQuantity - 1;
 			this.productService.deductQuantity(deductedquantity, productId);
-			return true;
+			return order;
 		}
-		return false;
+		return null;
 	}
 
 	public boolean checkOutOfStocks(int productId) {
+		System.out.println("orderService");
 		int productQuantity = this.productService.getQuantity(productId);
+		System.out.println(productQuantity);
 		if (productQuantity > 0)
 			return true;
 		return false;

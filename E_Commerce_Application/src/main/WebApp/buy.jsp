@@ -93,9 +93,9 @@
 								<div class="col-lg-6 px-5 py-4">
 
 									<h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
+									<!-- action="/customer/order" method="get" -->
 
-									<form class="mb-5" action="/dashboard" method="post"
-										name="form1">
+									<form class="mb-5" id="form1">
 
 										<div class="form-outline mb-5">
 											<input type="text" id="typeText"
@@ -156,7 +156,19 @@
 			</div>
 		</div>
 	</section>
-	<script type="text/javascript"> 
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	
+	
+	<script>
+
 	 function totalBill(price,quantity){
 		 console.log("1 product price : "+price)
 		 console.log(quantity)
@@ -181,6 +193,49 @@
 	      }
 	    }    
 	    
+	
+		
+	  
+	    	
+	 	   
+	 	   $('#form1').on('submit',function(event){
+	 		   event.preventDefault();
+	 		  console.log("Order"+${product.getProductId()});
+		 	   let prodid={
+		 			   "productId":${product.getProductId()}
+		 	   }
+	 		   
+		 	   
+		 		 $.ajax({
+		 		 			type:"POST",
+		 		 			contentType : 'application/json; charset=utf-8',
+		 		 			 dataType : 'json',
+		 		 			url:'/checkoutofstock',                      
+		 		 			 data:JSON.stringify(prodid),
+		 		 			 success:function(result){
+		 		 				 if(result.statusCode==200){
+		 		 					 console.log(${product.getProductId()});
+		 		 					 window.location="http://localhost:8082/customer/order?product_id="+${product.getProductId()};
+		 		 				 }
+		 		 				 else if(result.statusCode==405){
+		 		 					swal("You have to login first")
+		 							 .then((value)=>{
+		 								 window.location="http://localhost:8082/customer/login";
+		 							 })
+		 		 				 }
+		 		 				 else{
+		 		 					 $('#outOfStock').html("This Item is currently out of stock")
+		 		 				 }
+		 		 			 
+		 		 			 },
+		 		 			 error: function(xhr, status, error) {
+		 		 				
+		 		 			   },	
+		 		 		})
+		 		 	   
+	 		   
+	 	   })
+	 	   
 	 
 	</script>
 

@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
-<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%-- <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%> --%>
 <%@page import="com.boot.application.entity.ProductItems"%>
 <%@page import="java.util.List"%>
 <html lang="en">
@@ -113,7 +113,7 @@ body {
 		<div>
 			<a class="active" >Home</a> <a
 				class="active">About</a> <a class="active" href="contact">Contact</a>
-			<a class="active" href="cart1">Cart</a>
+			<a class="active" href="cart1">Cart</a><a class="active" href="/customer/order">Order</a>
 		</div>
 
 

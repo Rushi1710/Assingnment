@@ -66,6 +66,7 @@ public class ProductService {
 	}
 
 	public int getQuantity(int productId) {
+		System.out.println("productService"+this.productRepository.countProductQuantity(productId));
 		return this.productRepository.countProductQuantity(productId);
 	}
 	
