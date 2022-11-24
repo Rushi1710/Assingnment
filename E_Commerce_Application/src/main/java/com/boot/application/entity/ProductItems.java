@@ -1,9 +1,13 @@
 package com.boot.application.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -11,13 +15,15 @@ import javax.persistence.Table;
 public class ProductItems {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int productId;
 	private String description;
 	private String productName;
 	private String image;
 	private int price;
 	private int quantity;
+	@OneToMany(mappedBy = "productItems",cascade = CascadeType.ALL)
+	 private List<Order> order;
 
 	public ProductItems() {
 

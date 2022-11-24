@@ -1,9 +1,12 @@
 package com.boot.application.entity;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -19,6 +22,9 @@ public class Customer {
 	private String name;
 	private String location;
 	private String role;
+	@Transient
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	private Order order;
 	
 	public Customer() {
 

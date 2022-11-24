@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,11 @@ public class Services {
 
 	public boolean validateCustomer(String userName, String password) {
 
-		return (this.customerRepository.existsById(userName) && password != null);
+		if (this.customerRepository.existsById(userName)) {
+			String password2 = this.customerRepository.findById(userName).get().getPassword();
+			return (password.equals(password2));
+		}
+		return false;
 	}
 
 	public Customer servicesForAdmin(String userName) {
@@ -55,12 +61,19 @@ public class Services {
 
 	}
 
-		public List<AddCart> getAllCartItem() {
+	public List<AddCart> getAllCartItem() {
 
 		List<AddCart> product = new ArrayList<>();
 		this.addCartRepository.findAll().forEach(product::add);
 		return product;
 
+	}
+
+	public Customer getCustomerById(String email) {
+		Optional<Customer> optCustomer = this.customerRepository.findById(email);
+		if (optCustomer.isPresent())
+			return optCustomer.get();
+		throw new EntityNotFoundException("Customer Not Found " + email);
 	}
 
 }

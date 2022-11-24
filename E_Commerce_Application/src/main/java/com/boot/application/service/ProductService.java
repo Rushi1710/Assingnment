@@ -65,4 +65,12 @@ public class ProductService {
 
 	}
 
+	public int getQuantity(int productId) {
+		return this.productRepository.countProductQuantity(productId);
+	}
+	
+	public void deductQuantity(int productQuantity,int itemId) {
+		this.productRepository.updateQuantityOfProductAfterOrder(productQuantity, itemId);
+	}
+
 }

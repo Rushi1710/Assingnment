@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.boot.application.dto.CustomerDto;
 import com.boot.application.entity.AddCart;
 import com.boot.application.entity.Customer;
+import com.boot.application.entity.Order;
 import com.boot.application.entity.ProductItems;
+import com.boot.application.service.OrderService;
 import com.boot.application.service.ProductService;
 import com.boot.application.service.Services;
 
@@ -31,6 +33,9 @@ public class CustomerController {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private OrderService orderService;
 
 	static final String LOGIN = "login";
 
@@ -144,6 +149,22 @@ public class CustomerController {
 		session.invalidate();
 		return "redirect:home";
 
+	}
+
+	@GetMapping("/order")
+	public String orderPage(HttpSession session, Model m) {
+
+		if (session.getAttribute("name") == null)
+			return "redirect:login";
+
+		String customerRequestDto = (String) session.getAttribute("name");
+		Customer customer = this.services.getCustomerById(customerRequestDto);
+		System.out.println(customer);
+		List<Order> orders = this.orderService.getAllOrderByUserName(customer);
+		System.out.println(orders);
+
+		m.addAttribute("orders", orders);
+		return "order";
 	}
 
 }
