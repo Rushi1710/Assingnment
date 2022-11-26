@@ -13,45 +13,42 @@ import com.boot.application.service.ProductService;
 
 @Component
 public class ImageUploader {
-	
+
 	@Autowired
 	ProductService productService;
 	int productId;
-	
+
 	private ImageUploader() {
 
 	}
-	
-	public String uploadImage(String path,MultipartFile  file) 
-	{
-		try {
-			String name=file.getOriginalFilename();
-			
-			if(name.isEmpty()) {
-				System.out.println("name is empty adding new name :" +this.productService.getProductById(productId).getImage());
-				return this.productService.getProductById(productId).getImage();
-				
-			}
-			String randomId=UUID.randomUUID().toString();
-			String fileName=randomId.concat(name.substring(name.lastIndexOf(".")));
-			
-			System.out.println(fileName);			
-			String fullpath=path+File.separator+fileName;
-			File f=new File(path);
 
-			if(!f.exists())
+	public String uploadImage(String path, MultipartFile file) {
+		try {
+			String name = file.getOriginalFilename();
+
+			if (name.isEmpty()) {
+				return this.productService.getProductById(productId).getImage();
+
+			}
+			String randomId = UUID.randomUUID().toString();
+			String fileName = randomId.concat(name.substring(name.lastIndexOf(".")));
+
+			String fullpath = path + File.separator + fileName;
+			File f = new File(path);
+
+			if (!f.exists())
 				f.mkdir();
-			
-			Files.copy(file.getInputStream(),Paths.get(fullpath));
+
+			Files.copy(file.getInputStream(), Paths.get(fullpath));
 			return fileName;
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
+
 	public void setId(int id) {
-		this.productId=id;
+		this.productId = id;
 	}
 }

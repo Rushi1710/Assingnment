@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.boot.application.dto.ProductIteamDto;
 import com.boot.application.dto.ResponseStatus;
+import com.boot.application.entity.Order;
 import com.boot.application.entity.ProductItems;
 import com.boot.application.service.OrderService;
 import com.boot.application.service.ProductService;
 import com.boot.application.util.ImageUploader;
 
+// Admin controller in this class performing admin related mapping
 @MultipartConfig
 @Controller
 public class AdminController {
@@ -35,59 +37,55 @@ public class AdminController {
 
 	@Autowired
 	private ImageUploader imageUploader;
-	
+
 	@Autowired
 	private OrderService orderService;
 
 	@Value("${upload.image}")
 	private String path;
 
+	// adminLogin() use for feching all product
 	@RequestMapping("/admin")
 	public String adminLogin(Model m, HttpSession session) {
 		List<ProductItems> products = this.productService.getAllProduct();
-		System.out.println(products);
 		m.addAttribute("products", products);
 		return "admin";
 	}
 
+	// This Method use for Adding Product to ProductItems Table
 	@PostMapping("/addproduct")
 	public @ResponseBody ResponseStatus<String> addProduct(@ModelAttribute ProductIteamDto dto) {
-
-		System.out.println("Dto from conroller :" + dto);
-
 		String filename = imageUploader.uploadImage(path, dto.getImg());
-		System.out.println("From controller" + filename);
 		dto.setImage(filename);
 		this.productService.insertProduct(dto);
 		return new ResponseStatus<>(200, "success");
 
 	}
 
+	// getProductById() use for finding particular product by productId
 	@PostMapping(path = "/getproductbyid", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseStatus<ProductItems> getProductById(@RequestBody String pid) {
-		System.out.println("pid : " + pid);
 
 		JSONObject orderJson = new JSONObject(pid);
 		int prodId = orderJson.getInt("productId");
-
-		System.out.println(prodId);
-
 		ProductItems product = this.productService.getProductById(prodId);
 		return new ResponseStatus<>(200, product);
 
 	}
 
+	// Delete particular product by id
 	@GetMapping("/delete")
 	public String deleteProductById(@RequestParam("product_id") int productId, Model model) {
-		System.out.println("delete Controller"+productId);
 		productService.deleteProduct(productId);
 		return "redirect:admin";
 
 	}
 
+	// update any product by using updateProduct() , this method getting all updated
+	// Details and update in productItems table
 	@PostMapping("/updateproduct")
 	public @ResponseBody ResponseStatus<String> updateProduct(@ModelAttribute ProductIteamDto dto) {
-		System.out.println("update Product Called with the data : " + dto);
+
 		this.imageUploader.setId(dto.getProductId());
 		String filename = this.imageUploader.uploadImage(path, dto.getImg());
 		dto.setImage(filename);
@@ -95,11 +93,10 @@ public class AdminController {
 		return new ResponseStatus<>(200, "success");
 	}
 
+	// check product Quantity and give correct msg
 	@PostMapping("/checkoutofstock")
 	public @ResponseBody ResponseStatus<String> checkOutOfStocks(@RequestBody String pid, HttpSession session) {
-		System.out.println("checkOut"+pid);
-		
-		
+
 		if (session.getAttribute("name") == null) {
 			return new ResponseStatus<>(405, "Forbidden Request");
 		}
@@ -111,8 +108,13 @@ public class AdminController {
 		return new ResponseStatus<>(401, "Out Of Stock");
 	}
 
-//	@PostMapping("dashboard")
-//	public String dashboard() {
-//		return "dashboard";
-//	}
+	@RequestMapping("/order1")
+	public String oreder(Model model) {
+	
+		List<Order> orderProduct = this.orderService.grtOrderbyuserName();
+		model.addAttribute("orders", orderProduct);
+		return "order";
+
+	}
+
 }

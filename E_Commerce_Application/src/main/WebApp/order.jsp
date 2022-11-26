@@ -51,15 +51,16 @@
 				<p class="font-weight-normal">Main Menu</p>
 				<li><a href="http://localhost:8082/customer/home">Home</a></li>
 				<li><a href="#">About</a></li>
-				<li><a href="#">Portfolio</a></li>
+				<li><a href="#">profile</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</nav>
 
 		<div class="content">
 			<%
-			List<Order> orders = (List<Order>) request.getAttribute("orders");
-			if (orders.isEmpty()) {
+			List<Order> order = (List<Order>) request.getAttribute("orders");
+			String userName = (String) session.getAttribute("name");
+			if (order == null) {
 			%>
 
 			<h2>No Order Placed</h2>
@@ -69,7 +70,8 @@
 
 			<div class="container" id="product-container">
 				<%
-				for (Order o : orders) {
+				for (Order o : order) {
+					if (userName.equals(o.getCustomer().getUserName())) {
 				%>
 				<div class="card shadow  mb-2 bg-white rounded h-8">
 					<div class="row no-gutters">
@@ -111,6 +113,7 @@
 				</div>
 
 				<%
+				}
 				}
 				%>
 			</div>

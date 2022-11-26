@@ -81,35 +81,70 @@ a {
 	<%
 	}
 	%>
-	<form action="registration" method="post">
+	<form action="registration" method="post" id="reg-form">
 		<div class="container">
 			<h1>Register</h1>
 			<p>Please fill in this form to create an account.</p>
 			<hr>
 
 			<label for="email"><strong>Email</strong></label> <input type="text"
-				placeholder="Enter Email" name="email" id="email" required>
-
-			<label for="psw"><strong>Password</strong></label> <input
-				type="password" placeholder="Enter Password" name="password"
+				class="form-control" placeholder="Enter Email" name="email"
+				id="email" required onkeyup="return emailValidation()"> <span
+				id="email-error"></span> <br> <label for="psw"><strong>Password</strong></label>
+			<input type="password" placeholder="Enter Password" name="password"
 				id="psw" required> <label for="name"><strong>Full
 					Name</strong></label> <input type="text" placeholder="Enter Name" name="name"
-				id="psw-repeat" required> <label for="UserName"><strong>UserName</strong></label>
-			<input type="text" placeholder="Enter UserName" name="userName"
+				id="psw-repeat" required> <label for="UserName">
+				<p id="fullname" style="display: none;" class="error">Only
+					Letters allowed</p> <strong>UserName</strong>
+			</label> <input type="text" placeholder="Enter UserName" name="userName"
 				id="psw-repeat" required> <label for="contact"><strong>Mobile
 					No</strong></label> <input type="text" placeholder="Enter Mobile Number"
-				name="contact" id="psw-repeat" pattern="[0-9]{10}" title="Ten digit number enter not added etra symbole" required> <label
-				for="location"><strong>Location</strong></label> <input type="text"
-				placeholder="Enter location" name="location" id="psw-repeat"
-				required>
+				name="contact" id="psw-repeat" pattern="[0-9]{10}"
+				title="Ten digit number enter not added etra symbole" required>
+			<label for="location"><strong>Location</strong></label> <input
+				type="text" placeholder="Enter location" name="location"
+				id="psw-repeat" required>
 
 			<hr>
-
-
 			<button type="submit" class="registerbtn">Register</button>
 		</div>
 
 	</form>
+
+
+	<script>
+	
+	function emailValidation()
+	{
+	  value = document.getElementById('email').value;
+	  apos=value.indexOf("@"); console.log("@ = "+apos);
+	  dotpos=value.lastIndexOf("."); console.log("lastIndexOfdot = "+dotpos);
+	  lastpos=value.length-1;console.log("lastpos"+lastpos);
+	  if (apos < 1 || dotpos-apos < 2 || lastpos-dotpos > 3 || lastpos-dotpos < 2){
+		  document.getElementById("email-error").style.color = "red";
+	      document.getElementById("email-error").innerHTML = "Invalid Email Address";
+	      return false;
+	    } else {
+	    	  document.getElementById("email-error").style.color = "green";
+	          document.getElementById("email-error").innerHTML = "Valid Email Address";
+	      return true;
+	  }
+	}
+	
+	
+	$('#reg-form').on('submit',function(event){
+			event.preventDefault()
+			var inputfirstName=$('#psw-repeat').val()
+		if(inputfirstName=="" || onlyLetters(inputfirstName)){
+			$('#fullname').show()
+		}
+		else{
+			$(this).unbind('submit').submit()
+		}		
+}) 
+		
+	</script>
 
 </body>
 </html>

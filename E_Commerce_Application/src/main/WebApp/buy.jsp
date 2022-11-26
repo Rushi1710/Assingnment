@@ -62,13 +62,16 @@
 											<div class="d-flex align-items-center">
 
 												<!-- Product Price -->
-
+												<label for="number">Price </label>
 												<h3 class="fw-bold mb-0 me-5 pe-3"><%=productItems.getPrice()%></h3>
 												<div class="def-number-input number-input safari_only">
 
-													<input class="quantity fw-bold text-black" min="0"
-														name="quantity" value="1" type="number" id="qut"
-														onclick="totalBill(<%=productItems.getPrice()%>,value)">
+
+
+													<label for="number">Quantity</label> <input type="number"
+														id="number" name="quantity" value="1" min="1"
+														max="<%productItems.getQuantity();%>"
+														onclick="totalBill(<%=productItems.getPrice()%>,value)" />
 
 												</div>
 											</div>
@@ -93,7 +96,6 @@
 								<div class="col-lg-6 px-5 py-4">
 
 									<h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
-									<!-- action="/customer/order" method="get" -->
 
 									<form class="mb-5" id="form1">
 
@@ -131,13 +133,11 @@
 											</div>
 										</div>
 
-										<p class="mb-5">
-											Lorem ipsum dolor sit amet consectetur, adipisicing elit <a
-												href="#!">obcaecati sapiente</a>.
-										</p>
+
 
 										<button type="submit" class="btn btn-primary btn-block btn-lg">
 											Buy now</button>
+										<p id="outOfStock" style="color: red"></p>
 
 										<h5 class="fw-bold mb-5"
 											style="position: absolute; bottom: 0;">
@@ -156,7 +156,7 @@
 			</div>
 		</div>
 	</section>
-	
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
 		crossorigin="anonymous"></script>
@@ -165,8 +165,8 @@
 		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
 		crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	
-	
+
+
 	<script>
 
 	 function totalBill(price,quantity){
@@ -178,25 +178,7 @@
 	 }
 	 
 	 
-	 function lettersOnlyCheck(customerName)
-	 {
-	    
-	    var reg = /^[A-Za-z]+$/;
-	    if(customerName.value.match(reg))
-	      {
-	       return true;
-	      }
-	    else
-	      {
-	      alert("Please enter only letters in name.");
-	      return false;
-	      }
-	    }    
-	    
-	
 		
-	  
-	    	
 	 	   
 	 	   $('#form1').on('submit',function(event){
 	 		   event.preventDefault();

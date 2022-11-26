@@ -1,5 +1,6 @@
 package com.boot.application.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,11 @@ public class OrderService {
 	@Autowired
 	OrderRepository orderRepository;
 
+	// save All data in order_table
 	public Order buyProduct(String userName, int productId) {
 		Customer customer = this.service.getCustomerById(userName);
 		ProductItems product = this.productService.getProductById(productId);
-		int productQuantity = this.productService.getQuantity(productId);
+		int productQuantity = product.getQuantity();
 		if (productQuantity > 0) {
 			Order order = new Order();
 			order.setCustomer(customer);
@@ -41,15 +43,19 @@ public class OrderService {
 	}
 
 	public boolean checkOutOfStocks(int productId) {
-		System.out.println("orderService");
 		int productQuantity = this.productService.getQuantity(productId);
-		System.out.println(productQuantity);
-		if (productQuantity > 0)
-			return true;
-		return false;
+		return (productQuantity > 0);
+
 	}
 
 	public List<Order> getAllOrderByUserName(Customer customer) {
 		return this.orderRepository.findAllByCustomerUserName(customer.getUserName());
 	}
+
+	public List<Order> grtOrderbyuserName() {
+		List<Order> orders = new ArrayList<>();
+		orderRepository.findAll().forEach(orders::add);
+		return orders;
+	}
+
 }

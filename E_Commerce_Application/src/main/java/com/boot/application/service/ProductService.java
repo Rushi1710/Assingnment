@@ -19,9 +19,7 @@ public class ProductService {
 
 	public boolean insertProduct(ProductIteamDto productIteamDto) {
 		ProductItems product = CustomerMap.convertProductDtoToProduct(productIteamDto);
-		System.out.println(product);
 		if (!this.productRepository.existsById(product.getProductId())) {
-			System.out.println("Inserting product to database");
 			this.productRepository.save(product);
 			return true;
 		}
@@ -31,11 +29,9 @@ public class ProductService {
 	public boolean updateProduct(ProductIteamDto productIteamDto) {
 		if (this.productRepository.existsById(productIteamDto.getProductId())) {
 			ProductItems product = CustomerMap.convertProductDtoToProduct(productIteamDto);
-			System.out.println("Product Converted from valuemapper :" + product);
 			this.productRepository.save(product);
 			return true;
 		}
-		System.out.println("Product not found with the given product id :" + productIteamDto.getProductId());
 		return false;
 	}
 
@@ -66,12 +62,11 @@ public class ProductService {
 	}
 
 	public int getQuantity(int productId) {
-		System.out.println("productService"+this.productRepository.countProductQuantity(productId));
 		return this.productRepository.countProductQuantity(productId);
 	}
-	
-	public void deductQuantity(int productQuantity,int itemId) {
-		this.productRepository.updateQuantityOfProductAfterOrder(productQuantity, itemId);
+
+	public void deductQuantity(int productQuantity, int productId) {
+		this.productRepository.updateQuantityOfProductAfterOrder(productQuantity, productId);
 	}
 
 }

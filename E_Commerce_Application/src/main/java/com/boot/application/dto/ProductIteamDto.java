@@ -91,9 +91,7 @@ public class ProductIteamDto {
 		this.img = img;
 	}
 
-	public void setItemPhoto(String filename) {
 
-	}
 
 	public Integer getItemId() {
 

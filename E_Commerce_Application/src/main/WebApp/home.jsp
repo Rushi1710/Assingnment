@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%-- <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%> --%>
@@ -111,9 +111,9 @@ body {
 	<div class="topnav">
 
 		<div>
-			<a class="active" >Home</a> <a
-				class="active">About</a> <a class="active" href="contact">Contact</a>
-			<a class="active" href="cart1">Cart</a><a class="active" href="/customer/order">Order</a>
+			<a class="active">Home</a> <a class="active">About</a> <a
+				class="active" href="contact">Contact</a> <a class="active"
+				href="cart1">Cart</a><a class="active" href="/order1">Order</a>
 		</div>
 
 
@@ -175,14 +175,14 @@ body {
 							<div>
 								<button class="btn btn-primary" type="submit">
 									<a style="color: white"
-										onclick="addCart(<%=iteam.getProductId()%>)">Add To
-										Cart</a>
+										onclick="addCart(<%=iteam.getProductId()%>)">Add To Cart</a>
 								</button>
 
 
 								<button class="btn btn-primary" type="submit">
 									<a style="color: white"
 										onclick="buynow(<%=iteam.getProductId()%>)">Buy Now</a>
+
 								</button>
 							</div>
 						</div>
@@ -260,9 +260,6 @@ body {
 			
 		})
 		
-
-	
-	
 	function buynow(pid){
 		let name=$('#username').text();
 		console.log(name);
@@ -276,7 +273,6 @@ body {
 		}
 		
     }
-	
 	
 	 function addCart(pid){	
 		 let name=$('#username').text();

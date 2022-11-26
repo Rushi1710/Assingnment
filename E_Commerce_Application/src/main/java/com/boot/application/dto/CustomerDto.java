@@ -1,7 +1,12 @@
 package com.boot.application.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class CustomerDto {
 	private String userName;
+//	@NotBlank(message = "Email cannot Be Empty")
+//	@Email(message = "Invalid Email Format")
 	private String email;
 	private String password;
 	private String contact;

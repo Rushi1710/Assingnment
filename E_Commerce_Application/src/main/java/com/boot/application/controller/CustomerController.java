@@ -3,12 +3,15 @@ package com.boot.application.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.boot.application.dto.CustomerDto;
 import com.boot.application.entity.AddCart;
 import com.boot.application.entity.Customer;
-import com.boot.application.entity.Order;
 import com.boot.application.entity.ProductItems;
 import com.boot.application.service.OrderService;
 import com.boot.application.service.ProductService;
 import com.boot.application.service.Services;
 
+// customer controller use for performing customer related mapping like, login , registration ,search , Buy and Add to Cart .
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
@@ -58,6 +61,7 @@ public class CustomerController {
 
 	}
 
+	// This method is use for geting username and password and check valid or not .
 	@PostMapping("/login")
 	public String checkLoginData(@RequestParam("userName") String userName, @RequestParam("password") String password,
 			HttpSession session, Model model) {
@@ -90,7 +94,8 @@ public class CustomerController {
 	}
 
 	@PostMapping("/registration")
-	public String validation(CustomerDto customerDto, Model model) {
+	public String validation( @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult,
+			Model model) {
 		if (services.insertCustomerData(customerDto) != null) {
 			return LOGIN;
 		}
@@ -100,6 +105,7 @@ public class CustomerController {
 
 	}
 
+	// this method gives search product data
 	@PostMapping("/search")
 	public @ResponseBody List<ProductItems> getProductBySearch(@RequestBody String productName) {
 
@@ -112,6 +118,7 @@ public class CustomerController {
 		return this.productService.getProductBySearch(name);
 	}
 
+	// when any customer buy any product procceing '/buy'
 	@RequestMapping("/buy")
 	public String buy(@RequestParam("product_id") int productId, Model model) {
 		ProductItems productDetails = productService.getProductById(productId);
@@ -122,12 +129,12 @@ public class CustomerController {
 	@RequestMapping("/cart1")
 	public String cart(Model model) {
 		List<AddCart> addCarts = services.getAllCartItem();
-		System.out.println(addCarts);
 		model.addAttribute("cart", addCarts);
 		return "cart";
-
 	}
 
+	// When customer clicked on addcart button then stored product Details with
+	// customer Username .
 	@GetMapping("/cart")
 	public String addCartt(@RequestParam("product_id") int productId, Model model, HttpSession session) {
 
@@ -144,38 +151,24 @@ public class CustomerController {
 		return "redirect:cart1";
 	}
 
+	// Customer Clicked on LogOut button then logout method is execute and invalid()
+	// working
 	@RequestMapping("/logout")
 	public String logOut(HttpSession session) {
 		session.invalidate();
 		return "redirect:home";
-
 	}
 
 	@GetMapping("/order")
 	public String orderPage(@RequestParam("product_id") int pid, HttpSession session, Model m) {
 
-		System.out.println("Order");
 		String userName = (String) session.getAttribute("name");
-		System.out.println(pid);
-//		Order order = new Order();
-//		order.setProductItems(this.productService.getProductById(pid));
-//		order.setCustomer(this.services.getCustomerById(userName));
-//		String location = this.services.getCustomerById(userName).getLocation();
-//		order.setAddress(location);
-		Order order = this.orderService.buyProduct(userName, pid);
+
+		this.orderService.buyProduct(userName, pid);
 
 		if (session.getAttribute("name") == null)
 			return "redirect:login";
-
-		String customerRequestDto = (String) session.getAttribute("name");
-		// Customer customer = this.services.getCustomerById(customerRequestDto);
-		// System.out.println(customer);
-		// List<Order> orders = this.orderService.getAllOrderByUserName(customer);
-		// System.out.println(orders);
-		System.out.println("ORDER" + order);
-
-		m.addAttribute("orders", order);
-		return "order";
+		return "dashboard";
 	}
 
 }

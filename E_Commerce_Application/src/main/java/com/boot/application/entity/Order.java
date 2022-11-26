@@ -27,14 +27,11 @@ public class Order {
 
 	private String address;
 
-	
-	  @Column(name = "orderDate", nullable = false, columnDefinition =
-	 "TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP") private
-	 Date orderDate = new Date();
-	 
+	@Column(name = "orderDate", nullable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
+	private Date orderDate = new Date();
 
 	public Order() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Order(int orderId, ProductItems productItems, Customer customer, String address, Date orderDate) {
