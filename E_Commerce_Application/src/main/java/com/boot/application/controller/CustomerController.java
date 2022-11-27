@@ -89,18 +89,22 @@ public class CustomerController {
 	}
 
 	@RequestMapping("/registration")
-	public String registerCustomer() {
+	public String registerCustomer(Model m) {
+		m.addAttribute("customerDto",new CustomerDto());
 		return "registration";
 	}
 
 	@PostMapping("/registration")
-	public String validation( @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult,
+	public String validation(@Valid @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult,
 			Model model) {
-		if (services.insertCustomerData(customerDto) != null) {
+		if (bindingResult.hasErrors()) {
+			System.out.println(bindingResult);
+			return "registration";
+		} else if (services.insertCustomerData(customerDto) != null) {
 			return LOGIN;
 		}
 		String error = "Already Exist";
-		model.addAttribute("error", error);
+		model.addAttribute("error1", error);
 		return "registration";
 
 	}

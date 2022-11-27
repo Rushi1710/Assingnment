@@ -1,6 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
-<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%-- <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%> --%>
 <%@page import="com.boot.application.entity.ProductItems"%>
 <%@page import="java.util.List"%>
 <html lang="en">
@@ -109,9 +111,9 @@ body {
 	<div class="topnav">
 
 		<div>
-			<a class="active" onclick="alertFunction()">Home</a> <a
-				class="active">About</a> <a class="active" href="contact">Contact</a>
-			<a class="active" href="cart1">Cart</a>
+			<a class="active">Home</a> <a class="active">About</a> <a
+				class="active" href="contact">Contact</a> <a class="active"
+				href="cart1">Cart</a><a class="active" href="/order1">Order</a>
 		</div>
 
 
@@ -173,14 +175,14 @@ body {
 							<div>
 								<button class="btn btn-primary" type="submit">
 									<a style="color: white"
-										onclick="addCart(<%=iteam.getProductId()%>,),al">Add To
-										Cart</a>
+										onclick="addCart(<%=iteam.getProductId()%>)">Add To Cart</a>
 								</button>
 
 
 								<button class="btn btn-primary" type="submit">
 									<a style="color: white"
-										onclick="buynow(<%=iteam.getProductId()%>,)">Buy Now</a>
+										onclick="buynow(<%=iteam.getProductId()%>)">Buy Now</a>
+
 								</button>
 							</div>
 						</div>
@@ -258,54 +260,6 @@ body {
 			
 		})
 		
-
-		
-	/* function addCart(pid,pname,price,dsc){
-	    let cart = localStorage.getItem("cart");
-	    if(cart == null)
-	    {
-	    	href="/customer/cart?product_id='+item.productId +'"
-	        //no cart yet
-	        let products =[];
-	        let cartEmpty;
-	        let product = {productId:pid,productName:pname, price:price,description :dsc, quantity:1 };
-	        products.push(product);
-	        localStorage.setItem("cart",JSON.stringify(products));
-	        console.log("product is add 1st time");
-
-	    }else{
-	        //cart is already present
-	      let pcart = JSON.parse(cart);
-	       console.log("CArt value:" +JSON.parse(cart))
-	        let oldProduct = pcart.find((item) =>item.productId == pid)
-	        console.log(oldProduct);
-	        if(oldProduct){
-	            oldProduct.quantity = oldProduct.quantity+1;
-	            pcart.map((item)=> {
-	                if(item.productId === oldProduct.productId){
-	                    item.quantity = oldProduct.quantity;
-	                }
-	            })
-	            localStorage.setItem("cart",JSON.stringify(pcart));
-	            console.log("product is incresed")
-	        }
-	        else{
-	        	let product = { productId: pid, productName: pname, price: price, description: dsc, quantity: 1 };
-	        	console.log(pcart)
-                localStorage.setItem("cart",JSON.stringify(pcart))
-	        }
-	    }
-	} */
-	
-	/* function searchProduct(){
-		console.log("search buttom clicked")
-		
-		document.getElementById("search-form").addEventListener("click", function(event){
-			  event.preventDefault()
-			});
-		
-	}	 */
-	
 	function buynow(pid){
 		let name=$('#username').text();
 		console.log(name);
@@ -320,7 +274,6 @@ body {
 		
     }
 	
-	
 	 function addCart(pid){	
 		 let name=$('#username').text();
 		console.log(name);
@@ -328,6 +281,7 @@ body {
 		var url = new URL("http://localhost:8082/customer/cart?product_id=");
 		url.searchParams.set('product_id',pid);
 		window.location.href=url;
+		alert("product added succesfully in cart");
 		}else{
 			alert("Without login you Can not Add product to Cart!");
 			 window.location.replace("http://localhost:8082/customer/login") 

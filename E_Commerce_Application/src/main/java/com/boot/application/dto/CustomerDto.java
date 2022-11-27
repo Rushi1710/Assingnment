@@ -2,15 +2,29 @@ package com.boot.application.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.springframework.stereotype.Component;
 
 public class CustomerDto {
+	@NotEmpty
+	@Size(min = 3 ,message = "Is Requried")
 	private String userName;
-//	@NotBlank(message = "Email cannot Be Empty")
-//	@Email(message = "Invalid Email Format")
+	@NotNull
+	@Size(min = 11 ,message = "Is Requried")
 	private String email;
+	@NotNull
+	@Size(min = 5 ,message = "Is Requried")
 	private String password;
+	@NotNull()
+	@Size(min = 10, max = 10,message = "Enter Phone number Should be 10 Digit")
 	private String contact;
+	@NotNull
+	@Size(min = 3 ,message = "")
 	private String name;
+	@NotNull( message = "Is Requried")
 	private String location;
 	private String role;
 
