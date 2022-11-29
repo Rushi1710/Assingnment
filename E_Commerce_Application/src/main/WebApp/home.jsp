@@ -179,14 +179,17 @@ body {
 								</button>
 
 
-								<button class="btn btn-primary" type="submit">
+								<button class="btn btn-primary" type="submit" id="form1">
 									<a style="color: white"
 										onclick="buynow(<%=iteam.getProductId()%>)">Buy Now</a>
-
 								</button>
+
 							</div>
+
 						</div>
+
 					</div>
+					<p id="outOfStock" style="color: red"></p>
 
 				</div>
 
@@ -260,7 +263,7 @@ body {
 			
 		})
 		
-	function buynow(pid){
+	/* function buynow(pid){
 		let name=$('#username').text();
 		console.log(name);
 		if(name!= "null" && name != ""){
@@ -272,7 +275,47 @@ body {
 			window.location.replace("http://localhost:8082/customer/login")
 		}
 		
+    } */
+    
+    
+    function buynow(pid){
+    	let name=$('#username').text();
+		let prodid ={ "productId":pid}
+		console.log("buy now "+ prodid);
+		if(name!= "null" && name != ""){
+			 $.ajax({
+		 			type:"POST",
+		 			contentType : 'application/json; charset=utf-8',
+		 			 dataType : 'json',
+		 			url:'/checkoutofstock',                      
+		 			 data:JSON.stringify(prodid),
+		 			 success:function(result){
+		 				 if(result.statusCode==200){
+		 					
+		 					 window.location="http://localhost:8082/customer/buy?product_id="+pid;
+		 				 }
+		 				 else if(result.statusCode==405){
+		 					swal("You have to login first")
+							 .then((value)=>{
+								 window.location="http://localhost:8082/customer/login";
+							 })
+		 				 }
+		 				 else{
+		 					 $('#outOfStock').html("This Item is currently out of stock")
+		 				 }
+		 			 
+		 			 },
+		 			 error: function(xhr, status, error) {
+		 				
+		 			   },	
+		 		})
+		}else{
+			 alert("Without login you Can not Buy any product !");
+			window.location.replace("http://localhost:8082/customer/login")
+		}
     }
+    
+    
 	
 	 function addCart(pid){	
 		 let name=$('#username').text();

@@ -40,6 +40,8 @@ public class AdminController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	
 
 	@Value("${upload.image}")
 	private String path;
@@ -109,12 +111,16 @@ public class AdminController {
 	}
 
 	@RequestMapping("/order1")
-	public String oreder(Model model) {
-	
+	public String oreder(Model model,HttpSession session) {
+	    
+		if(session.getAttribute("name") != null) {
 		List<Order> orderProduct = this.orderService.grtOrderbyuserName();
 		model.addAttribute("orders", orderProduct);
 		return "order";
+		}
+		return "redirect:/customer/login";
 
 	}
+	
 
 }

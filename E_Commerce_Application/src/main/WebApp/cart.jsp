@@ -64,8 +64,9 @@
 					<td><%=iteam.getCustomerEmail()%></td>
 
 
-					<td><button onclick="deleteIteam()" style="color: red;">Delete
-							Iteam</button>
+					<td><button
+							onclick="deleteProductbyId(<%=iteam.getCartIteamId()%>)"
+							style="color: red;">Delete Iteam</button>
 						<button class="btn btn-primary" type="submit">
 							<a style="color: white"
 								onclick="buyNow(<%=iteam.getCartIteamId()%>,'<%=iteam.getCartIteamName()%>')">Buy
@@ -73,7 +74,7 @@
 						</button></td>
 
 					<%
-					} 
+					}
 					%>
 
 					<%
@@ -84,6 +85,7 @@
 			</table>
 
 		</div>
+
 
 	</div>
 
@@ -96,7 +98,8 @@
 	}
 	%>
 
-
+	<button type="button" style="color: blue;"><a href="home"><em class="fas fa-angle-right me-2"></em>Back to
+		shopping</a></button>
 	<script type="text/javascript">
 		function buyNow(pid, name1) {
 
@@ -112,6 +115,15 @@
 			}
 
 		}
+		
+	
+		function deleteProductbyId(pid) {
+			console.log(pid);
+			var url = new URL("http://localhost:8082/customer/delete?product_id=");
+			url.searchParams.set('product_id', pid);
+			window.location.href = url;
+		}
+	
 	
 </script>
 </body>

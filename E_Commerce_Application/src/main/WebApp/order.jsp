@@ -51,7 +51,7 @@
 				<p class="font-weight-normal">Main Menu</p>
 				<li><a href="http://localhost:8082/customer/home">Home</a></li>
 				<li><a href="#">About</a></li>
-				<li><a href="#">profile</a></li>
+				<li><a href="/customer/profile">profile</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</nav>
@@ -80,9 +80,12 @@
 								src="../productimages/<%=o.getProductItems().getImage()%>"
 								alt="Suresh Dasari Card" style="height: 200px; width: 350px;">
 						</div>
+
 						<div class="col-sm-9">
 							<div class="card-body" style="height: 180px">
+								<h6 style="color: blue;">Product Name :</h6>
 								<h5 class="card-title"><%=o.getProductItems().getProductName()%></h5>
+								<h6 style="color: blue;">Description :</h6>
 								<%
 								int descriptionsize = o.getProductItems().getDescription().length();
 								if (descriptionsize > 200) {
@@ -98,6 +101,11 @@
 								<%
 								}
 								%>
+								<h6 style="color: blue;">Price :</h6>
+								<h3 class="card-text">
+									<span style="font-size: 20px" class="fa">&#xf156;</span>
+									<%=o.getProductItems().getPrice()%>
+								</h3>
 							</div>
 							<div class="card-footer" style="border: 0;">
 								<div class="text-right">
@@ -130,6 +138,8 @@
 		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
 		crossorigin="anonymous"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
 
 </body>
 </html>

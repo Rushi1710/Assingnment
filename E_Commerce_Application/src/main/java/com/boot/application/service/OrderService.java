@@ -26,7 +26,9 @@ public class OrderService {
 	// save All data in order_table
 	public Order buyProduct(String userName, int productId) {
 		Customer customer = this.service.getCustomerById(userName);
+		System.out.println(customer);
 		ProductItems product = this.productService.getProductById(productId);
+		System.out.println(product);
 		int productQuantity = product.getQuantity();
 		if (productQuantity > 0) {
 			Order order = new Order();

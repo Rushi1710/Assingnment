@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="com.boot.application.entity.AddCart"%>
 <%@page import="com.boot.application.entity.ProductItems"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -17,47 +19,74 @@
 </head>
 <body>
 	<%
-	ProductItems productItems = (ProductItems) request.getAttribute("product");
+	List<AddCart> productItems = (List<AddCart>) request.getAttribute("cart");
+	String userName = (String) session.getAttribute("name");
 	if (productItems != null) {
 	%>
+
 	<div class="w3-container">
+
 		<h2
 			style="color: red; font-style: italic; align-content: center; text-align: center;">Cart
 			Iteams</h2>
 		<div class="w3-responsive">
 			<table class="w3-table-all">
-			<caption>This is cart jsp file . In this File i have to perform Buy and AddCart opration</caption>
+				<caption>This is cart jsp file . In this File i have to
+					perform Buy and AddCart opration</caption>
+
 				<tr>
+
 					<th>Image</th>
 					<th>Product Name</th>
 					<th>Description</th>
 					<th>Price</th>
+					<th>Customer username</th>
 					<th>Edit</th>
+
 				</tr>
+
+
+				<%
+				for (AddCart iteam : productItems) {
+				%>
+				<%
+				if (userName != null && userName.equals(iteam.getCustomerEmail())) {
+				%>
 				<tr>
+
+
 					<td><img class=""
-						src="../productimages/<%=productItems.getImage()%>"
+						src="../productimages/<%=iteam.getCartIteamImage()%>"
 						alt="Card image cap" width="200px" height="200px"></td>
-					<td><%=productItems.getProductName()%></td>
-					<td><%=productItems.getDescription()%></td>
-					<td><%=productItems.getPrice()%></td>
+					<td><%=iteam.getCartIteamName()%></td>
+					<td><%=iteam.getCartIteamDescription()%></td>
+					<td><%=iteam.getCartIteamPrice()%></td>
+					<td><%=iteam.getCustomerEmail()%></td>
 
 
 					<td><button onclick="deleteIteam()" style="color: red;">Delete
 							Iteam</button>
 						<button class="btn btn-primary" type="submit">
 							<a style="color: white"
-								onclick="buyNow(<%=productItems.getProductId()%>,'<%=productItems.getProductName()%>')">Buy
+								onclick="buyNow(<%=iteam.getCartIteamId()%>,'<%=iteam.getCartIteamName()%>')">Buy
 								Now</a>
-						</button>
-					<td></td>
+						</button></td>
 
+					<%
+					} 
+					%>
+
+					<%
+					}
+					%>
 				</tr>
 
 			</table>
 
 		</div>
+
 	</div>
+
 	<%
 	} else {
 	String error = "empty cart";
@@ -85,6 +114,6 @@
 		}
 	
 </script>
-	</ body>
+</body>
 </html>
 

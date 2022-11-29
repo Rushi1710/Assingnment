@@ -44,8 +44,9 @@
 
 											<!-- Product Image  -->
 
-											<img src="../productimages/<%=productItems.getImage()%>" class="img-fluid"
-												style="width: 150px;" alt="Generic placeholder image">
+											<img src="../productimages/<%=productItems.getImage()%>"
+												class="img-fluid" style="width: 150px;"
+												alt="Generic placeholder image">
 										</div>
 										<div class="flex-grow-1 ms-3">
 											<a href="#!" class="float-end text-black"><em
@@ -61,13 +62,16 @@
 											<div class="d-flex align-items-center">
 
 												<!-- Product Price -->
-
-												<p class="fw-bold mb-0 me-5 pe-3"><%=productItems.getPrice()%></p>
+												<label for="number">Price </label>
+												<h3 class="fw-bold mb-0 me-5 pe-3"><%=productItems.getPrice()%></h3>
 												<div class="def-number-input number-input safari_only">
 
-													<input class="quantity fw-bold text-black" min="0"
-														name="quantity" value="1" type="number"
-														onclick="totalBill(<%=productItems.getPrice()%>,value)">
+
+
+													<label for="number">Quantity</label> <input type="number"
+														id="number" name="quantity" value="1" min="1"
+														max="<%productItems.getQuantity();%>"
+														onclick="totalBill(<%=productItems.getPrice()%>,value)" />
 
 												</div>
 											</div>
@@ -93,18 +97,20 @@
 
 									<h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
 
-									<form class="mb-5" action="/dashboard" method="post">
+									<form class="mb-5" id="form1">
 
 										<div class="form-outline mb-5">
 											<input type="text" id="typeText"
 												class="form-control form-control-lg" siez="17"
-												minlength="12" maxlength="12" required /> <label
+												placeholder="1234-4567-6789"
+												pattern="[0-9]{4}-[0-9]{4}-[0-9]{4}" required /> <label
 												class="form-label" for="typeText">Card Number</label>
 										</div>
 
 										<div class="form-outline mb-5">
-											<input type="text" id="typeName"
-												class="form-control form-control-lg" siez="17" required />
+											<input type="text" id="typeName" name="customerName"
+												onclick="lettersOnlyCheck(customerName)"
+												class="form-control form-control-lg" size="17" required />
 											<label class="form-label" for="typeName">Name on card</label>
 										</div>
 
@@ -121,19 +127,17 @@
 												<div class="form-outline">
 													<input type="password" id="typeText"
 														class="form-control form-control-lg" size="1"
-														minlength="3" maxlength="3" required /> <label
-														class="form-label" for="typeText">Cvv</label>
+														pattern="[0-9]{3}" required /> <label class="form-label"
+														for="typeText">Cvv</label>
 												</div>
 											</div>
 										</div>
 
-										<p class="mb-5">
-											Lorem ipsum dolor sit amet consectetur, adipisicing elit <a
-												href="#!">obcaecati sapiente</a>.
-										</p>
+
 
 										<button type="submit" class="btn btn-primary btn-block btn-lg">
 											Buy now</button>
+										<p id="outOfStock" style="color: red"></p>
 
 										<h5 class="fw-bold mb-5"
 											style="position: absolute; bottom: 0;">
@@ -152,7 +156,19 @@
 			</div>
 		</div>
 	</section>
-	<script type="text/javascript">
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+		crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+	<script>
+
 	 function totalBill(price,quantity){
 		 console.log("1 product price : "+price)
 		 console.log(quantity)
@@ -160,6 +176,49 @@
 		 document.getElementById('itemPrice').innerHTML=total;
 		 console.log(total);
 	 }
+	 
+	 
+		
+	 	   
+	 	   $('#form1').on('submit',function(event){
+	 		   event.preventDefault();
+	 		  console.log("Order"+${product.getProductId()});
+		 	   let prodid={
+		 			   "productId":${product.getProductId()}
+		 	   }
+	 		   
+		 	   
+		 		 $.ajax({
+		 		 			type:"POST",
+		 		 			contentType : 'application/json; charset=utf-8',
+		 		 			 dataType : 'json',
+		 		 			url:'/checkoutofstock',                      
+		 		 			 data:JSON.stringify(prodid),
+		 		 			 success:function(result){
+		 		 				 if(result.statusCode==200){
+		 		 					 console.log(${product.getProductId()});
+		 		 					 window.location="http://localhost:8082/customer/order?product_id="+${product.getProductId()};
+		 		 				 }
+		 		 				 else if(result.statusCode==405){
+		 		 					swal("You have to login first")
+		 							 .then((value)=>{
+		 								 window.location="http://localhost:8082/customer/login";
+		 							 })
+		 		 				 }
+		 		 				 else{
+		 		 					 $('#outOfStock').html("This Item is currently out of stock")
+		 		 				 }
+		 		 			 
+		 		 			 },
+		 		 			 error: function(xhr, status, error) {
+		 		 				
+		 		 			   },	
+		 		 		})
+		 		 	   
+	 		   
+	 	   })
+	 	   
+	 
 	</script>
 
 </body>

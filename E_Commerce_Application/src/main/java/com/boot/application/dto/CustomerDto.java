@@ -1,17 +1,32 @@
 package com.boot.application.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class CustomerDto {
+	@NotEmpty
+	@Size(min = 3, message = "user name size must be 3")
 	private String userName;
-//	@NotBlank(message = "Email cannot Be Empty")
-//	@Email(message = "Invalid Email Format")
+
+	@NotNull(message = "is required")
 	private String email;
+
+	@NotNull(message = "is required")
+	@Size(min = 5, message = "Password Size Must be 5")
 	private String password;
+
+	@NotNull(message = "is required")
+	@Size(min = 10, max = 10, message = "Enter Phone number Should be 10 Digit")
 	private String contact;
+
+	@NotNull(message = "is required")
+	@Size(min = 2, message = "is required")
 	private String name;
+
+	@NotNull(message = "Is Requried")
 	private String location;
+
 	private String role;
 
 	public CustomerDto() {

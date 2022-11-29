@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.boot.application.map.CustomerMap;
 import com.boot.application.repository.AddCartRepository;
 import com.boot.application.repository.CustomerRepository;
 
+// customer services class for performing customer related operation.
 @Service
 public class Services {
 
@@ -25,23 +27,31 @@ public class Services {
 	@Autowired
 	private AddCartRepository addCartRepository;
 
-	public String insertCustomerData(CustomerDto customerDto) {
+	// Insert Data CustomerDto To Customer Entity
+	public String insertCustomerData(CustomerDto customerDto) throws EntityExistsException{
 
 		Customer customer = CustomerMap.insertDataInMainEntity(customerDto);
-		if (!this.customerRepository.existsById(customer.getUserName())) {
+		if (this.customerRepository.existsById(customer.getUserName())) {
+			throw new EntityExistsException("user Name Already exist");
+		} else if (this.customerRepository.existsByEmail(customer.getEmail())) {
+			throw new EntityExistsException("Email  Already exist");
+		} else if (this.customerRepository.existsByContact(customer.getContact())) {
+			throw new EntityExistsException("Phone Number Already exist");
+		} else {
 			this.customerRepository.save(customer);
 			return "Insert Customer Data ";
 		}
 
-		return null;
-
 	}
 
+	// save particular product details with customer id to addcart table .
 	public AddCart inserItemToCart(AddCart addcart) {
 		this.addCartRepository.save(addcart);
 		return addcart;
 	}
 
+	// when customer enter user name and password this time check customer data is
+	// validated or not.
 	public boolean validateCustomer(String userName, String password) {
 
 		if (this.customerRepository.existsById(userName)) {
@@ -61,14 +71,15 @@ public class Services {
 
 	}
 
+	// get all data form addcart table .
 	public List<AddCart> getAllCartItem() {
-
 		List<AddCart> product = new ArrayList<>();
 		this.addCartRepository.findAll().forEach(product::add);
 		return product;
-
 	}
 
+	// Fetch single customer By customer user name if customer not present in table
+	// then gives customer Not found exception.
 	public Customer getCustomerById(String userName) {
 		Optional<Customer> optCustomer = this.customerRepository.findById(userName);
 		if (optCustomer.isPresent())

@@ -91,7 +91,8 @@ List<ProductItems> products = (List<ProductItems>) request.getAttribute("product
 
 	<table class="table table-primary table-hover my-3 table-bordered"
 		style="border-color: black;">
-		<caption>This is admin jsp file . In this file i have to perfornm update ,insert and delete products</caption>
+		<caption>This is admin jsp file . In this file i have to
+			perfornm update ,insert and delete products</caption>
 		<thead>
 			<tr class="text-center">
 				<th scope="col">Table Id</th>
@@ -264,7 +265,7 @@ var productId="";
 			 data:JSON.stringify(prodId),
 			 success:function(result){
 				 console.log(result)
-				 $('#title').val(result.t.productName)
+			console.log( $('#title').val(result.t.productName));
 				 $('#description').val(result.t.description)
 				 $('#price').val(result.t.price)
 				 $('#quantity').val(result.t.quantity)
@@ -281,11 +282,10 @@ var productId="";
 	}
 	
 	
-	
-	
 	$('#update_Post_form').on('submit',function(event){
 			event.preventDefault();
            let form=new FormData(this);
+          
            console.log("pid");
            form.set("productId",productId)
 		 	$.ajax({

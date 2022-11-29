@@ -2,15 +2,20 @@ package com.boot.application.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +27,7 @@ import com.boot.application.dto.CustomerDto;
 import com.boot.application.entity.AddCart;
 import com.boot.application.entity.Customer;
 import com.boot.application.entity.ProductItems;
+import com.boot.application.service.AddToCartService;
 import com.boot.application.service.OrderService;
 import com.boot.application.service.ProductService;
 import com.boot.application.service.Services;
@@ -30,6 +36,8 @@ import com.boot.application.service.Services;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+
+	private static Logger logger = Logger.getLogger(CustomerController.class);
 
 	@Autowired
 	private Services services;
@@ -40,7 +48,11 @@ public class CustomerController {
 	@Autowired
 	private OrderService orderService;
 
+	@Autowired
+	private AddToCartService addToCartService;
+
 	static final String LOGIN = "login";
+	static final String REGISTRATION = "registration";
 
 	@RequestMapping("/home")
 	public String homePage(Model model) {
@@ -85,23 +97,43 @@ public class CustomerController {
 
 	@PostMapping("/admin")
 	public String adminpage() {
-		return "home";
+		return "redirect:home";
+	}
+
+	// add an initbinder ... to convert trim input strings
+	// remove leading and trailing whitespace
+	// resolve issue for our validation
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+
+		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}
 
 	@RequestMapping("/registration")
-	public String registerCustomer() {
-		return "registration";
+	public String registerCustomer(Model m) {
+		m.addAttribute("customerDto", new CustomerDto());
+		return REGISTRATION;
 	}
 
 	@PostMapping("/registration")
-	public String validation( @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult,
+	public String validation(@Valid @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult,
 			Model model) {
-		if (services.insertCustomerData(customerDto) != null) {
-			return LOGIN;
+		System.out.println();
+		try {
+			if (bindingResult.hasErrors()) {
+
+				return "redirect:registration";
+			}
+
+			else if (services.insertCustomerData(customerDto) != null) {
+				return LOGIN;
+			}
+		} catch (EntityExistsException e) {
+			return "redirect:registration?error=" + e.getMessage();
 		}
-		String error = "Already Exist";
-		model.addAttribute("error", error);
-		return "registration";
+		return null;
 
 	}
 
@@ -138,17 +170,35 @@ public class CustomerController {
 	@GetMapping("/cart")
 	public String addCartt(@RequestParam("product_id") int productId, Model model, HttpSession session) {
 
-		String userEmail = (String) session.getAttribute("name");
-		ProductItems productDetails = productService.getProductById(productId);
-		AddCart addcart = new AddCart();
-		addcart.setCartIteamDescription(productDetails.getDescription());
-		addcart.setCartIteamId(productId);
-		addcart.setCartIteamImage(productDetails.getImage());
-		addcart.setCartIteamName(productDetails.getProductName());
-		addcart.setCartIteamPrice(productDetails.getPrice());
-		addcart.setCustomerEmail(userEmail);
-		services.inserItemToCart(addcart);
-		return "redirect:cart1";
+		try {
+			String userEmail = (String) session.getAttribute("name");
+			ProductItems productDetails = productService.getProductById(productId);
+			AddCart addcart = new AddCart();
+			addcart.setCartIteamDescription(productDetails.getDescription());
+			addcart.setCartIteamId(productId);
+			addcart.setCartIteamImage(productDetails.getImage());
+			addcart.setCartIteamName(productDetails.getProductName());
+			addcart.setCartIteamPrice(productDetails.getPrice());
+			addcart.setCustomerEmail(userEmail);
+			services.inserItemToCart(addcart);
+		} catch (Exception e) {
+			List<AddCart> addCarts = services.getAllCartItem();
+			System.out.println("get all data in cart" + addCarts);
+			model.addAttribute("cart", addCarts);
+			return "redirect:cart";
+		}
+		return "redirect:home";
+
+	}
+
+	// Delete particular Cart Product By id
+	@GetMapping("/delete")
+	public String deleteProductById(@RequestParam("product_id") int productId, Model model) {
+		addToCartService.deleteProduct(productId);
+		List<AddCart> addCarts = services.getAllCartItem();
+		model.addAttribute("cart", addCarts);
+		return "cart";
+
 	}
 
 	// Customer Clicked on LogOut button then logout method is execute and invalid()
@@ -163,12 +213,18 @@ public class CustomerController {
 	public String orderPage(@RequestParam("product_id") int pid, HttpSession session, Model m) {
 
 		String userName = (String) session.getAttribute("name");
-
 		this.orderService.buyProduct(userName, pid);
-
 		if (session.getAttribute("name") == null)
 			return "redirect:login";
 		return "dashboard";
+	}
+
+	@RequestMapping("/profile")
+	public String profile(Model model, HttpSession session) {
+		String userName = (String) session.getAttribute("name");
+		Customer customer = this.services.getCustomerById(userName);
+		model.addAttribute("customer", customer);
+		return "profile";
 	}
 
 }

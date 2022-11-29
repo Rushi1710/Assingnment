@@ -8,14 +8,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 @Entity
 @Table
 public class Customer {
 
 	@Id
 	private String userName;
-//	@Column(unique = true , length = 20 , nullable = true)
 	private String email;
 	private String password;
 	private String contact;
@@ -23,9 +21,9 @@ public class Customer {
 	private String location;
 	private String role;
 	@Transient
-	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Order order;
-	
+
 	public Customer() {
 
 	}
@@ -103,9 +101,5 @@ public class Customer {
 		return "Customer [userName=" + userName + ", email=" + email + ", password=" + password + ", contact=" + contact
 				+ ", name=" + name + ", location=" + location + ", role=" + role + "]";
 	}
-	
-	
-	
-	
 
 }

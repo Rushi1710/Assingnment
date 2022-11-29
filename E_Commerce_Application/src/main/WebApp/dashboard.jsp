@@ -9,14 +9,15 @@
 <body>
 
 	<%
-	String name = (String) request.getAttribute("name");
+	String name = (String) session.getAttribute("name");
 	%>
 	<h1>
 		Welcome
 		<%=name%>
+		Your order is placed Successfully
 	</h1>
 	<h1>
-		<a href="customer/home">Home Page</a>
+		<a href="home">Home Page</a>
 	</h1>
 
 </body>

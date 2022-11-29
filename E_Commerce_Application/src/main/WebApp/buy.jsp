@@ -14,6 +14,23 @@
 	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
 	crossorigin="anonymous">
 <link href="../css/style.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Bootstrap CSS CDN -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+	integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+	crossorigin="anonymous">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+	crossorigin="anonymous" />
+<!-- Our Custom CSS -->
+<link rel="stylesheet" href="/css/style1.css">
+<link rel="text/javascript" href="/js/index.js">
+
 
 
 
@@ -49,8 +66,8 @@
 												alt="Generic placeholder image">
 										</div>
 										<div class="flex-grow-1 ms-3">
-											<a href="#!" class="float-end text-black"><em
-												class="fas fa-times"></em></a>
+											<!-- <a href="#!" class="float-end text-black"><em
+												class="fas fa-times"></em></a> -->
 
 											<!-- Product Name -->
 
@@ -62,15 +79,16 @@
 											<div class="d-flex align-items-center">
 
 												<!-- Product Price -->
-												<label for="number">Price </label>
-												<h3 class="fw-bold mb-0 me-5 pe-3"><%=productItems.getPrice()%></h3>
+
+												<h3 class="fw-bold mb-0 me-5 pe-3" style="width: 100px">
+													<span style="font-size: 20px" class="fa">&#xf156;</span><%=productItems.getPrice()%></h3>
 												<div class="def-number-input number-input safari_only">
 
 
 
 													<label for="number">Quantity</label> <input type="number"
 														id="number" name="quantity" value="1" min="1"
-														max="<%productItems.getQuantity();%>"
+														max="<%=productItems.getQuantity()%>"
 														onclick="totalBill(<%=productItems.getPrice()%>,value)" />
 
 												</div>
@@ -89,7 +107,8 @@
 									<div class="d-flex justify-content-between p-2 mb-2"
 										style="background-color: #e1f5fe;">
 										<h5 class="fw-bold mb-0">Total:</h5>
-										<h5 class="fw-bold mb-0" id="itemPrice"><%=productItems.getPrice()%></h5>
+										<h5 class="fw-bold mb-0" id="itemPrice">
+											<%=productItems.getPrice()%></h5>
 									</div>
 
 								</div>
@@ -172,9 +191,14 @@
 	 function totalBill(price,quantity){
 		 console.log("1 product price : "+price)
 		 console.log(quantity)
-		  let total = price*quantity;
+		  let total = price*quantity; 
 		 document.getElementById('itemPrice').innerHTML=total;
-		 console.log(total);
+		  	console.log("price and quantity");
+		 	let quantity1 =$('#number').val();
+		 	let price1 = $('#itemPrice').val() ;
+		 	console.log(quantity1);
+		 
+		
 	 }
 	 
 	 
@@ -197,7 +221,10 @@
 		 		 			 success:function(result){
 		 		 				 if(result.statusCode==200){
 		 		 					 console.log(${product.getProductId()});
+		 		 	
+		 		 					let quantity1 =$('#number').val();
 		 		 					 window.location="http://localhost:8082/customer/order?product_id="+${product.getProductId()};
+		 		 					 
 		 		 				 }
 		 		 				 else if(result.statusCode==405){
 		 		 					swal("You have to login first")

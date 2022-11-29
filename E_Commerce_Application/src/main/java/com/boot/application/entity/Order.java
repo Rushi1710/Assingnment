@@ -30,17 +30,24 @@ public class Order {
 	@Column(name = "orderDate", nullable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
 	private Date orderDate = new Date();
 
+	private int quantiy;
+
+	private int price;
+
 	public Order() {
 
 	}
 
-	public Order(int orderId, ProductItems productItems, Customer customer, String address, Date orderDate) {
+	public Order(int orderId, ProductItems productItems, Customer customer, String address, Date orderDate, int quantiy,
+			int price) {
 		super();
 		this.orderId = orderId;
 		this.productItems = productItems;
 		this.customer = customer;
 		this.address = address;
 		this.orderDate = orderDate;
+		this.quantiy = quantiy;
+		this.price = price;
 	}
 
 	public int getOrderId() {
@@ -83,10 +90,26 @@ public class Order {
 		this.orderDate = orderDate;
 	}
 
+	public int getQuantiy() {
+		return quantiy;
+	}
+
+	public void setQuantiy(int quantiy) {
+		this.quantiy = quantiy;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
 		return "Order [orderId=" + orderId + ", productItems=" + productItems + ", customer=" + customer + ", address="
-				+ address + "]";
+				+ address + ", orderDate=" + orderDate + ", quantiy=" + quantiy + ", price=" + price + "]";
 	}
 
 }

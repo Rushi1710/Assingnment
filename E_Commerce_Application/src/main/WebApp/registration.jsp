@@ -1,3 +1,6 @@
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +8,11 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <style>
-body {
+.error {
+	color: red;
+}
+
+/* body {
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: black;
 }
@@ -67,12 +74,14 @@ a {
 	background-color: #f1f1f1;
 	text-align: center;
 }
+*
+/
 </style>
 </head>
 <body>
 
-	<%
-	String error = (String) request.getAttribute("error");
+	<%-- <%
+	String error = (String) request.getAttribute("error1");
 	%>
 	<%
 	if (error != null) {
@@ -80,8 +89,18 @@ a {
 	<h3 style="color: red"><%=error%></h3>
 	<%
 	}
+	%> --%>
+
+	<%
+	if ((String) request.getParameter("error") != null) {
+		String msg = (String) request.getParameter("error");
+	%><h4 style="color: red"><%=msg%></h4>
+	<%
+	}
 	%>
-	<form action="registration" method="post" id="reg-form">
+
+
+	<%-- <form action="registration" method="post" id="reg-form">
 		<div class="container">
 			<h1>Register</h1>
 			<p>Please fill in this form to create an account.</p>
@@ -96,11 +115,15 @@ a {
 					Name</strong></label> <input type="text" placeholder="Enter Name" name="name"
 				id="psw-repeat" required> <label for="UserName">
 				<p id="fullname" style="display: none;" class="error">Only
-					Letters allowed</p> <strong>UserName</strong>
+					Letters allowed</p> <strong>User Name (*)</strong>
 			</label> <input type="text" placeholder="Enter UserName" name="userName"
-				id="psw-repeat" required> <label for="contact"><strong>Mobile
-					No</strong></label> <input type="text" placeholder="Enter Mobile Number"
-				name="contact" id="psw-repeat" pattern="[0-9]{10}"
+				path="userName" id="psw-repeat">
+			<form:errors path="userName" cssClass="error" />
+
+
+			<label for="contact"><strong>Mobile No</strong></label> <input
+				type="text" placeholder="Enter Mobile Number" name="contact"
+				id="psw-repeat" pattern="[0-9]{10}"
 				title="Ten digit number enter not added etra symbole" required>
 			<label for="location"><strong>Location</strong></label> <input
 				type="text" placeholder="Enter location" name="location"
@@ -110,8 +133,61 @@ a {
 			<button type="submit" class="registerbtn">Register</button>
 		</div>
 
-	</form>
+		</form>
+ --%>
 
+
+	<form:form action="registration" id="customer"
+		modelAttribute="customerDto" method="POST">
+
+		<h1>Registration</h1>
+		<br>
+		Email (*): <form:input type="email" path="email" id="email"
+			onkeyup="emailValidation()" />
+		<span id="email-error"></span>
+		<form:errors path="email" cssClass="error" />
+		<br>
+		<br>
+		
+		User Name (*): <form:input type="text" path="userName" id="userName" />
+
+		<form:errors path="userName" cssClass="error" />
+
+		<br>
+		<br>
+		
+		Phone number (*): <form:input type="text" path="contact" id="contact"
+			onkeyup="mobileNumber_Validation()" />
+		<span id="contact-error"></span>
+		<form:errors path="contact" cssClass="error" />
+
+		<br>
+		<br>
+		
+		Full name (*): <form:input type="text" path="name" id="name"
+			onkeyup="name_Validation()" />
+		<span id="name-error"></span>
+		<form:errors path="name" cssClass="error" />
+
+		<br>
+		<br>
+		
+		Password (*): <form:input type="text" path="password" />
+		<form:errors path="password" cssClass="error" />
+
+		<br>
+		<br>
+		
+		
+		Address (*): <form:input type="text" path="location" />
+		<form:errors path="location" cssClass="error" />
+
+		<br>
+		<br>
+
+		<input type="submit" value="Submit" />
+
+	</form:form>
 
 	<script>
 	
@@ -131,21 +207,51 @@ a {
 	      return true;
 	  }
 	}
+
 	
 	
-	$('#reg-form').on('submit',function(event){
-			event.preventDefault()
-			var inputfirstName=$('#psw-repeat').val()
-		if(inputfirstName=="" || onlyLetters(inputfirstName)){
-			$('#fullname').show()
-		}
-		else{
-			$(this).unbind('submit').submit()
-		}		
-}) 
+	function name_Validation(){
+		
+	    var regName = /^[a-zA-Z]+ [a-zA-Z]+$/; 
+	    var regName1=/^[A-Za-z]+/;
+	    var name = document.getElementById('name').value;
+	    
+	/*     if(!(regName.test(name)||regName1.test(name))|| name==="") */
+	    
+	    if(onlyLetters(name))
+	    {
+	    	document.getElementById('name-error').style.color = 'red';
+			document.getElementById('name-error').innerHTML = 'Please Enter Your Full Name (first & last name) Without Any Number';
+	        return false;
+	    }else{
+	    	console.log('reg match')
+	    	document.getElementById('name-error').style.color = 'green';
+			document.getElementById('name-error').innerHTML = 'Your Name Is Matched';
+	        return true;
+	    }
+	}
+	
+	function onlyLetters(Name) {
+		var regx = /^[a-zA-Z][a-zA-Z ]*$/;
+		return !regx.test(Name);
+	}
+	
+	function mobileNumber_Validation(){
+	    var regName=/^\d{10}$/;
+	    var number=document.getElementById('contact').value;
+	  
+	    if(!(regName.test(number))){
+	    	document.getElementById('contact-error').style.color='red';
+	    	document.getElementById('contact-error').innerHTML='Please Enter Valid Number';
+	    	return false;
+	    }else{
+	    	document.getElementById('contact-error').style.color='green';
+	    	document.getElementById('contact-error').innerHTML='valid number';
+	    	return true;
+	       }
+	}
 		
 	</script>
-
 </body>
 </html>
 
