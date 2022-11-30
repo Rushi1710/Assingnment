@@ -143,21 +143,21 @@ a {
 		<h1>Registration</h1>
 		<br>
 		Email (*): <form:input type="email" path="email" id="email"
-			onkeyup="emailValidation()" />
+			onkeyup="emailValidation()" required="required" />
 		<span id="email-error"></span>
 		<form:errors path="email" cssClass="error" />
 		<br>
 		<br>
 		
-		User Name (*): <form:input type="text" path="userName" id="userName" />
-
+		User Name (*): <form:input type="text" path="userName" id="userName"
+			required="required" />
 		<form:errors path="userName" cssClass="error" />
 
 		<br>
 		<br>
 		
 		Phone number (*): <form:input type="text" path="contact" id="contact"
-			onkeyup="mobileNumber_Validation()" />
+			onkeyup="mobileNumber_Validation()" required="required" />
 		<span id="contact-error"></span>
 		<form:errors path="contact" cssClass="error" />
 
@@ -165,21 +165,23 @@ a {
 		<br>
 		
 		Full name (*): <form:input type="text" path="name" id="name"
-			onkeyup="name_Validation()" />
+			onkeyup="name_Validation()" required="required" />
 		<span id="name-error"></span>
 		<form:errors path="name" cssClass="error" />
 
 		<br>
 		<br>
 		
-		Password (*): <form:input type="text" path="password" />
+		Password (*): <form:input type="text" path="password"
+			required="required" />
 		<form:errors path="password" cssClass="error" />
 
 		<br>
 		<br>
 		
 		
-		Address (*): <form:input type="text" path="location" />
+		Address (*): <form:input type="text" path="location"
+			required="required" />
 		<form:errors path="location" cssClass="error" />
 
 		<br>
@@ -244,7 +246,9 @@ a {
 	    	document.getElementById('contact-error').style.color='red';
 	    	document.getElementById('contact-error').innerHTML='Please Enter Valid Number';
 	    	return false;
-	    }else{
+	    }else
+	    
+	    {
 	    	document.getElementById('contact-error').style.color='green';
 	    	document.getElementById('contact-error').innerHTML='valid number';
 	    	return true;

@@ -7,12 +7,15 @@ import java.util.Optional;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boot.application.dto.CustomerDto;
+import com.boot.application.dto.ProductIteamDto;
 import com.boot.application.entity.AddCart;
 import com.boot.application.entity.Customer;
+import com.boot.application.entity.ProductItems;
 import com.boot.application.map.CustomerMap;
 import com.boot.application.repository.AddCartRepository;
 import com.boot.application.repository.CustomerRepository;
@@ -27,19 +30,24 @@ public class Services {
 	@Autowired
 	private AddCartRepository addCartRepository;
 
-	// Insert Data CustomerDto To Customer Entity
-	public String insertCustomerData(CustomerDto customerDto) throws EntityExistsException{
+	private static Logger logger = Logger.getLogger(Services.class);
 
+	// Insert Data CustomerDto To Customer Entity
+	public boolean insertCustomerData(CustomerDto customerDto) throws EntityExistsException {
+		logger.info("insert CutomerDto to Customer" + customerDto);
 		Customer customer = CustomerMap.insertDataInMainEntity(customerDto);
 		if (this.customerRepository.existsById(customer.getUserName())) {
-			throw new EntityExistsException("user Name Already exist");
+			logger.error(customer.getUserName() + "customer username exist");
+			throw new EntityExistsException("User Name Already exist");
 		} else if (this.customerRepository.existsByEmail(customer.getEmail())) {
+			logger.error(customer.getEmail() + "customer email exist");
 			throw new EntityExistsException("Email  Already exist");
 		} else if (this.customerRepository.existsByContact(customer.getContact())) {
+			logger.error(customer.getEmail() + "customer phone number exist");
 			throw new EntityExistsException("Phone Number Already exist");
 		} else {
 			this.customerRepository.save(customer);
-			return "Insert Customer Data ";
+			return true;
 		}
 
 	}
@@ -86,5 +94,21 @@ public class Services {
 			return optCustomer.get();
 		throw new EntityNotFoundException("Customer Not Found " + userName);
 	}
+
+// update custmoer data and insert into customer entity
+//	public boolean insertCustomerDataintoDto(CustomerDto dto) {
+//
+//		Customer customer = CustomerMap.insertDataInMainEntity(dto);
+//		if(this.customerRepository.existsByEmail(dto.getEmail()) || this.customerRepository.existsByContact(dto.getContact())){
+//			Customer customer1  = getCustomerById(dto.getUserName());
+//			if(customer.getEmail().equals(customer1.getEmail()) && customer.getContact().equals(customer1.getContact())) {
+//				this.customerRepository.save(customer);
+//			}
+//			return false;
+//		}
+//		this.customerRepository.save(customer);
+//		return true;
+//		
+//	}
 
 }

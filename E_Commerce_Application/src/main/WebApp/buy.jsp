@@ -66,16 +66,15 @@
 												alt="Generic placeholder image">
 										</div>
 										<div class="flex-grow-1 ms-3">
-											<!-- <a href="#!" class="float-end text-black"><em
-												class="fas fa-times"></em></a> -->
+
 
 											<!-- Product Name -->
-
+											<h6 style="color: black;">product name :</h6>
 											<h5 class="text-primary"><%=productItems.getProductName()%></h5>
 
 											<!-- Product Discription -->
-
-											<h6 style="color: #9e9e9e;"><%=productItems.getDescription()%></h6>
+											<h6 style="color: black;">product Description :</h6>
+											<h6 style="color: blue;"><%=productItems.getDescription()%></h6>
 											<div class="d-flex align-items-center">
 
 												<!-- Product Price -->
@@ -88,8 +87,10 @@
 
 													<label for="number">Quantity</label> <input type="number"
 														id="number" name="quantity" value="1" min="1"
-														max="<%=productItems.getQuantity()%>"
-														onclick="totalBill(<%=productItems.getPrice()%>,value)" />
+														<%-- max="<%=productItems.getQuantity()%>" --%>
+														onclick="totalBill(<%=productItems.getPrice()%>,value,<%=productItems.getQuantity()%>)" />
+													<h6 id="stock"></h6>
+
 
 												</div>
 											</div>
@@ -110,9 +111,19 @@
 										<h5 class="fw-bold mb-0" id="itemPrice">
 											<%=productItems.getPrice()%></h5>
 									</div>
+									<br> <label for="cars">Choose a Payment Options:</label> <select
+										name="cars" id="cars">
+										<option value="saab">Credit/debit card</option>
+										<option value="volvo">Cash on Delivery</option>
+										<option value="opel">Google Pay</option>
+										<option value="audi">Digital wallets.</option>
+									</select>
 
 								</div>
-								<div class="col-lg-6 px-5 py-4">
+
+
+
+								<!-- <div class="col-lg-6 px-5 py-4">
 
 									<h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
 
@@ -128,9 +139,10 @@
 
 										<div class="form-outline mb-5">
 											<input type="text" id="typeName" name="customerName"
-												onclick="lettersOnlyCheck(customerName)"
-												class="form-control form-control-lg" size="17" required />
-											<label class="form-label" for="typeName">Name on card</label>
+												onkeyup="name_Validation()"
+												class="form-control form-control-lg" size="17" required /><span
+												id="name-error"></span> <label class="form-label"
+												for="typeName">Name on card</label>
 										</div>
 
 										<div class="row">
@@ -166,7 +178,7 @@
 
 									</form>
 
-								</div>
+								</div> -->
 							</div>
 
 						</div>
@@ -188,7 +200,7 @@
 
 	<script>
 
-	 function totalBill(price,quantity){
+	 function totalBill(price,quantity,qut){
 		 console.log("1 product price : "+price)
 		 console.log(quantity)
 		  let total = price*quantity; 
@@ -197,11 +209,43 @@
 		 	let quantity1 =$('#number').val();
 		 	let price1 = $('#itemPrice').val() ;
 		 	console.log(quantity1);
+		 	if(qut < quantity){
+		 		const name = quantity;
+		 		const number = " product not available ";
+		 		/* console.log(`${name}${number}`); // "Front 242"
+		 		const msg = ${name}${number}`; */
+		 		document.getElementById('stock').innerHTML=number;
+		 	}else{
+		 		document.getElementById('stock').innerHTML=" ";
+		 	}
 		 
 		
 	 }
 	 
+		function name_Validation(){
+			
+		    var regName = /^[a-zA-Z]+ [a-zA-Z]+$/; 
+		    var regName1=/^[A-Za-z]+/;
+		    var name = document.getElementById('typeName').value;
+		    
+		    if(onlyLetters(name))
+		    {
+		    	document.getElementById('name-error').style.color = 'red';
+				document.getElementById('name-error').innerHTML = 'Please Enter Your Full Name on card Without Any Number';
+		        return false;
+		    }else{
+		    	console.log('reg match')
+		    	document.getElementById('name-error').style.color = 'green';
+				document.getElementById('name-error').innerHTML = 'Your Name Is Matched';
+		        return true;
+		    }
+		}
 	 
+		function onlyLetters(Name) {
+			var regx = /^[a-zA-Z][a-zA-Z ]*$/;
+			return !regx.test(Name);
+		}
+		
 		
 	 	   
 	 	   $('#form1').on('submit',function(event){
@@ -223,7 +267,7 @@
 		 		 					 console.log(${product.getProductId()});
 		 		 	
 		 		 					let quantity1 =$('#number').val();
-		 		 					 window.location="http://localhost:8082/customer/order?product_id="+${product.getProductId()};
+		 		 					 window.location="http://localhost:8082/customer/order?product_id="+${product.getProductId()}+"&quantity="+quantity1;
 		 		 					 
 		 		 				 }
 		 		 				 else if(result.statusCode==405){

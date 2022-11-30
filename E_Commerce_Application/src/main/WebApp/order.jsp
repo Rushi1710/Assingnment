@@ -82,10 +82,11 @@
 						</div>
 
 						<div class="col-sm-9">
-							<div class="card-body" style="height: 180px">
+							<div class="card-body" style="height: 200px">
 								<h6 style="color: blue;">Product Name :</h6>
 								<h5 class="card-title"><%=o.getProductItems().getProductName()%></h5>
 								<h6 style="color: blue;">Description :</h6>
+
 								<%
 								int descriptionsize = o.getProductItems().getDescription().length();
 								if (descriptionsize > 200) {
@@ -101,10 +102,19 @@
 								<%
 								}
 								%>
+								<div style="border: 0;">
+									<div class="text-right">
+										<h5>
+											quantity:
+											<%=o.getQuantiy()%>
+										</h5>
+									</div>
+								</div>
+
 								<h6 style="color: blue;">Price :</h6>
 								<h3 class="card-text">
 									<span style="font-size: 20px" class="fa">&#xf156;</span>
-									<%=o.getProductItems().getPrice()%>
+									<%=o.getPrice()%>
 								</h3>
 							</div>
 							<div class="card-footer" style="border: 0;">

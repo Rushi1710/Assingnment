@@ -112,8 +112,8 @@ body {
 
 		<div>
 			<a class="active">Home</a> <a class="active">About</a> <a
-				class="active" href="contact">Contact</a> <a class="active"
-				href="cart1">Cart</a><a class="active" href="/order1">Order</a>
+				class="active">Contact</a> <a class="active" href="cart1">Cart</a><a
+				class="active" href="/order1">Order</a>
 		</div>
 
 

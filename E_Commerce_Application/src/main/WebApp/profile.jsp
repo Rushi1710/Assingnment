@@ -3,6 +3,7 @@
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <head>
+<title>profile page</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
@@ -73,7 +74,7 @@ input[type=submit]:hover {
 	%>
 	<h1></h1>
 
-
+	<%-- 
 	<div class="container">
 		<div style="text-align: center">
 			<h2>Customer Info</h2>
@@ -81,7 +82,8 @@ input[type=submit]:hover {
 		</div>
 		<div class="row">
 			<div class="column">
-				<img src="/images/img_avatar2.png" style="width: 50%;">
+				<img src="/images/img_avatar2.png" alt="profile symbol"
+					style="width: 50%;">
 			</div>
 			<div class="column">
 				<form action="/action_page.php">
@@ -93,25 +95,48 @@ input[type=submit]:hover {
 						type="text" id="userName" name="UserName"
 						value="<%=customer.getUserName()%>"> <br> <br> <label
 						for="address">Address</label><input type="text" id="location"
-						name="lastname" value="<%=customer.getLocation()%>"> 
-						
-						<br>
-					<br> 
-					<label for="contact">Phone No</label>
-					<input type="text"
+						name="lastname" value="<%=customer.getLocation()%>"> <br>
+					<br> <label for="contact">Phone No</label> <input type="text"
 						id="contact" name="contact" value="<%=customer.getContact()%>">
-						
-					<!-- <label for="subject">Subject</label>
-					<textarea id="subject" name="subject"
-						placeholder="Write something.." style="height: 170px"></textarea>
-						
-					    <input type="submit" value="Edit"> -->
+
+					<input type="submit" value="Edit">
 				</form>
 			</div>
 		</div>
-	</div>
+	</div> --%>
 
-	<h1></h1>
+	<h3 style="color: black; text-align: center;">Customer Profile ..</h3>
+	<form action="update" method="post" id="reg-form">
+		<div class="container">
+			<hr>
+
+			<label for="email"><strong>Email</strong></label> <input type="text"
+				class="form-control" value="<%=customer.getEmail()%>" name="email"
+				id="email" required onkeyup="return emailValidation()"> <span
+				id="email-error"></span> <br> <label for="name"><strong>Full
+					Name</strong></label> <input type="text" value="<%=customer.getName()%>" name="name"
+				id="psw-repeat" required> <label for="UserName"> <strong>User
+					Name </strong>
+			</label> <input type="text" value="<%=customer.getUserName()%>"
+				readonly="readonly" name="userName" id="psw-repeat"> <label
+				for="contact"><strong>Mobile No</strong></label> <input type="text"
+				value="<%=customer.getContact()%>" name="contact" id="psw-repeat"
+				pattern="[0-9]{10}"
+				title="Ten digit number enter not added etra symbole" required>
+
+			<label for="location"><strong>Location</strong></label> <input
+				type="text" value="<%=customer.getLocation()%>" name="location"
+				id="psw-repeat" required> <label for="password"><strong>Password</strong></label>
+			<input type="text" value="<%=customer.getPassword()%>"
+				name="password" id="psw-repeat" required>
+
+			<hr>
+			<button type="submit" class="registerbtn">Edit</button>
+		</div>
+
+	</form>
+
+
 
 </body>
 </html>

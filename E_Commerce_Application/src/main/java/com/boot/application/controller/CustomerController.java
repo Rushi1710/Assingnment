@@ -53,18 +53,14 @@ public class CustomerController {
 
 	static final String LOGIN = "login";
 	static final String REGISTRATION = "registration";
+	static final String HOME = "home";
 
 	@RequestMapping("/home")
 	public String homePage(Model model) {
+
 		List<ProductItems> product = this.productService.getAllProduct();
 		model.addAttribute("productList", product);
 		return "home";
-	}
-
-	@RequestMapping("/index")
-	public String index() {
-		return "index";
-
 	}
 
 	@RequestMapping("/login")
@@ -73,12 +69,13 @@ public class CustomerController {
 
 	}
 
-	// This method is use for geting username and password and check valid or not .
+	// This method is use for getting username and password and check valid or not .
 	@PostMapping("/login")
 	public String checkLoginData(@RequestParam("userName") String userName, @RequestParam("password") String password,
 			HttpSession session, Model model) {
 		List<ProductItems> product = this.productService.getAllProduct();
 		model.addAttribute("productList", product);
+
 		session.setAttribute("name", userName);
 
 		if (services.validateCustomer(userName, password)) {
@@ -87,7 +84,7 @@ public class CustomerController {
 			if (cust.getRole().contentEquals("admin")) {
 				return "redirect:/admin";
 			}
-			return "redirect:home";
+			return HOME;
 		}
 		String errormsg = "Invalid Input ";
 		model.addAttribute("error", errormsg);
@@ -120,14 +117,13 @@ public class CustomerController {
 	@PostMapping("/registration")
 	public String validation(@Valid @ModelAttribute("customerDto") CustomerDto customerDto, BindingResult bindingResult,
 			Model model) {
-		System.out.println();
 		try {
 			if (bindingResult.hasErrors()) {
-
+				System.out.println(bindingResult);
 				return "redirect:registration";
 			}
 
-			else if (services.insertCustomerData(customerDto) != null) {
+			else if (services.insertCustomerData(customerDto)) {
 				return LOGIN;
 			}
 		} catch (EntityExistsException e) {
@@ -136,6 +132,15 @@ public class CustomerController {
 		return null;
 
 	}
+
+//	@RequestMapping("/update")
+//	public String updateCustomer(@RequestBody CustomerDto dto) {
+//		if (services.insertCustomerDataintoDto(dto)) {
+//			return "profile";
+//		}
+//		return "redirect:home";
+//
+//	}
 
 	// this method gives search product data
 	@PostMapping("/search")
@@ -183,7 +188,6 @@ public class CustomerController {
 			services.inserItemToCart(addcart);
 		} catch (Exception e) {
 			List<AddCart> addCarts = services.getAllCartItem();
-			System.out.println("get all data in cart" + addCarts);
 			model.addAttribute("cart", addCarts);
 			return "redirect:cart";
 		}
@@ -207,13 +211,15 @@ public class CustomerController {
 	public String logOut(HttpSession session) {
 		session.invalidate();
 		return "redirect:home";
+
 	}
 
 	@GetMapping("/order")
-	public String orderPage(@RequestParam("product_id") int pid, HttpSession session, Model m) {
+	public String orderPage(@RequestParam("product_id") int pid, @RequestParam("quantity") int quantity,
+			HttpSession session, Model m) {
 
 		String userName = (String) session.getAttribute("name");
-		this.orderService.buyProduct(userName, pid);
+		this.orderService.buyProduct(userName, pid, quantity);
 		if (session.getAttribute("name") == null)
 			return "redirect:login";
 		return "dashboard";
