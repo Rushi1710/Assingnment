@@ -119,7 +119,7 @@ public class CustomerController {
 			Model model) {
 		try {
 			if (bindingResult.hasErrors()) {
-				System.out.println(bindingResult);
+				logger.error("Bean validation error :" + bindingResult);
 				return "redirect:registration";
 			}
 
@@ -127,20 +127,33 @@ public class CustomerController {
 				return LOGIN;
 			}
 		} catch (EntityExistsException e) {
+			logger.error(e);
 			return "redirect:registration?error=" + e.getMessage();
 		}
 		return null;
 
 	}
 
-//	@RequestMapping("/update")
-//	public String updateCustomer(@RequestBody CustomerDto dto) {
-//		if (services.insertCustomerDataintoDto(dto)) {
-//			return "profile";
-//		}
-//		return "redirect:home";
-//
-//	}
+	@RequestMapping("/update")
+	public String updateCustomer(CustomerDto dto, Model model) {
+
+		if (services.insertDtoToCustomer(dto)) {
+			logger.info("update customer data = " + dto);
+			return "redirect:profile?msg=successfull update ....";
+		}
+		return "redirect:profile?msg=Invalid credentials, Profile Not  update ....";
+
+	}
+
+	@RequestMapping("/profile")
+	public String profile(Model model, HttpSession session) {
+		String methodName = "profile";
+		
+		String userName = (String) session.getAttribute("name");
+		Customer customer = this.services.getCustomerById(userName);
+		model.addAttribute("customer", customer);
+		return "profile";
+	}
 
 	// this method gives search product data
 	@PostMapping("/search")
@@ -223,14 +236,6 @@ public class CustomerController {
 		if (session.getAttribute("name") == null)
 			return "redirect:login";
 		return "dashboard";
-	}
-
-	@RequestMapping("/profile")
-	public String profile(Model model, HttpSession session) {
-		String userName = (String) session.getAttribute("name");
-		Customer customer = this.services.getCustomerById(userName);
-		model.addAttribute("customer", customer);
-		return "profile";
 	}
 
 }

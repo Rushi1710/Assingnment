@@ -17,6 +17,8 @@
 	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
 	crossorigin="anonymous">
 <link href="../css/style.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <title>Document</title>
 <style>
@@ -110,14 +112,14 @@ body {
 
 	<div class="topnav">
 
-		<div>
+		<div >
 			<a class="active">Home</a> <a class="active">About</a> <a
 				class="active">Contact</a> <a class="active" href="cart1">Cart</a><a
 				class="active" href="/order1">Order</a>
 		</div>
 
 
-		<form action="SearchProduct" method="POST" id="search-form">
+		<form action="SearchProduct" method="POST" id="search-form" >
 			<input type="search" id="input-search" placeholder="Search.."
 				name="search">
 			<button type="submit" id="search-product">search</button>
@@ -126,7 +128,7 @@ body {
 		if (name == null) {
 		%>
 
-		<div class="login-container">
+		<div class="login-container"  >
 			<a class="nav-link active " href="login"><span
 				class="fa fa-user-circle"></span> Login</a> <a class="nav-link active "
 				href="registration"><span class="fa fa-user-circle"></span>
@@ -136,12 +138,15 @@ body {
 		<%
 		} else {
 		%>
-		<div class="login-container">
+		<div class="login-container"	>
 			<h3 id="username">
 				Welcome
 				<%=name%></h3>
 			<a class="nav-link active " href="logout"><span
-				class="fa fa-user-circle"></span>Log Out</a>
+				class="fa fa-user-circle"></span>Log Out</a><a class="nav-link active "
+				href="/customer/profile"><span class="fa fa-user-circle"></span>
+				Profile</a>
+
 
 		</div>
 		<%
@@ -164,13 +169,16 @@ body {
 								alt="Card image cap" width="200px" height="200px">
 						</div>
 						<div class="card-body">
-							<h4>
+							<h6 style="color: blue;">product Name :</h6>
+							<h5>
 								<%=iteam.getProductName()%>
-							</h4>
+							</h5>
+							<h6 style="color: blue;">product Description :</h6>
 							<small class="card-title"> <%=iteam.getDescription()%></small>
 
 							<h4 class="card-text">
-								price:<%=iteam.getPrice()%>
+								price:<span style="font-size: 20px" class="fa">&#xf156;</span>
+								<%=iteam.getPrice()%>
 							</h4>
 							<div>
 								<button class="btn btn-primary" type="submit">

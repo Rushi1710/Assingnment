@@ -123,7 +123,7 @@
 
 
 
-								<!-- <div class="col-lg-6 px-5 py-4">
+								<div class="col-lg-6 px-5 py-4">
 
 									<h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">Payment</h3>
 
@@ -178,7 +178,8 @@
 
 									</form>
 
-								</div> -->
+								</div>
+
 							</div>
 
 						</div>

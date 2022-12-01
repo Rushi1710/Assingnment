@@ -16,6 +16,8 @@
 	integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
 	crossorigin="anonymous">
 <link href="../css/style.css" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 	<%
@@ -39,7 +41,7 @@
 					<th>Image</th>
 					<th>Product Name</th>
 					<th>Description</th>
-					<th>Price</th>
+					<th>Price <span style="font-size: 20px" class="fa">&#xf156;</span> </th>
 					<th>Customer username</th>
 					<th>Edit</th>
 
@@ -60,7 +62,7 @@
 						alt="Card image cap" width="200px" height="200px"></td>
 					<td><%=iteam.getCartIteamName()%></td>
 					<td><%=iteam.getCartIteamDescription()%></td>
-					<td><%=iteam.getCartIteamPrice()%></td>
+					<td><span><%=iteam.getCartIteamPrice()%></span></td>
 					<td><%=iteam.getCustomerEmail()%></td>
 
 
@@ -98,8 +100,10 @@
 	}
 	%>
 
-	<button type="button" style="color: blue;"><a href="home"><em class="fas fa-angle-right me-2"></em>Back to
-		shopping</a></button>
+	<button type="button" style="color: blue;">
+		<a href="home"><em class="fas fa-angle-right me-2"></em>Back to
+			shopping</a>
+	</button>
 	<script type="text/javascript">
 		function buyNow(pid, name1) {
 

@@ -14,6 +14,15 @@ body {
 	box-sizing: border-box;
 }
 
+.center {
+	margin: 0;
+	position: absolute;
+	top: 80%;
+	left: 90%;
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
 /* Style inputs */
 input[type=text], select, textarea {
 	width: 100%;
@@ -69,6 +78,7 @@ input[type=submit]:hover {
 </head>
 <body>
 
+
 	<%
 	Customer customer = (Customer) request.getAttribute("customer");
 	%>
@@ -106,11 +116,12 @@ input[type=submit]:hover {
 	</div> --%>
 
 	<h3 style="color: black; text-align: center;">Customer Profile ..</h3>
+	<h3 style="color: green;">${param.msg}</h3>
 	<form action="update" method="post" id="reg-form">
 		<div class="container">
 			<hr>
 
-			<label for="email"><strong>Email</strong></label> <input type="text"
+			<label for="email"><strong>Email</strong></label> <input type="email"
 				class="form-control" value="<%=customer.getEmail()%>" name="email"
 				id="email" required onkeyup="return emailValidation()"> <span
 				id="email-error"></span> <br> <label for="name"><strong>Full
@@ -131,10 +142,17 @@ input[type=submit]:hover {
 				name="password" id="psw-repeat" required>
 
 			<hr>
-			<button type="submit" class="registerbtn">Edit</button>
+			<button type="submit" class="registerbtn"
+				style="background-color: blue; color: white;">Update
+				profile</button>
 		</div>
 
 	</form>
+	<div class="center">
+		<button type="submit">
+			<a href="/customer/home">home Page</a>
+		</button>
+	</div>
 
 
 

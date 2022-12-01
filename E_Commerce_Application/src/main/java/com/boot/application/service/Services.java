@@ -96,19 +96,29 @@ public class Services {
 	}
 
 // update custmoer data and insert into customer entity
-//	public boolean insertCustomerDataintoDto(CustomerDto dto) {
-//
-//		Customer customer = CustomerMap.insertDataInMainEntity(dto);
-//		if(this.customerRepository.existsByEmail(dto.getEmail()) || this.customerRepository.existsByContact(dto.getContact())){
-//			Customer customer1  = getCustomerById(dto.getUserName());
-//			if(customer.getEmail().equals(customer1.getEmail()) && customer.getContact().equals(customer1.getContact())) {
+	public boolean insertDtoToCustomer(CustomerDto dto) {
+
+		try {
+		Customer customer = CustomerMap.insertDataInMainEntity(dto);
+//		if (this.customerRepository.existsByEmail(dto.getEmail())
+//				|| this.customerRepository.existsByContact(dto.getContact())) {
+//			Customer customer1 = getCustomerById(dto.getUserName());
+//			if (customer.getEmail().equals(customer1.getEmail())
+//					&& customer.getContact().equals(customer1.getContact())) {
 //				this.customerRepository.save(customer);
 //			}
 //			return false;
 //		}
-//		this.customerRepository.save(customer);
-//		return true;
-//		
-//	}
+		this.customerRepository.save(customer);
+		return true;
+		}
+		catch (Exception e) {
+			logger.error(e+"Data not updated .");
+			return false;
+			
+		}
+	
+
+	}
 
 }
